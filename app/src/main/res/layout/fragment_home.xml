@@ -1,89 +1,93 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <!-- Welcome Message -->
-    <TextView
-        android:id="@+id/welcome_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome!"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Recommended Videos Section -->
-    <TextView
-        android:id="@+id/recommended_videos_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recommended Videos"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_recommended"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:background="@android:color/white"
-        android:padding="8dp"
-        android:clipToPadding="false"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_marginBottom="16dp"/>
+        <!-- Welcome Message -->
+        <TextView
+            android:id="@+id/welcome_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome!"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
-    <!-- Latest Study Groups Section -->
-    <TextView
-        android:id="@+id/latest_study_groups_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Latest Study Groups"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        <!-- Recommended Videos Section -->
+        <TextView
+            android:id="@+id/recommended_videos_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recommended Videos"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_latest_groups"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:background="@android:color/white"
-        android:padding="8dp"
-        android:clipToPadding="false"
-        android:layout_marginBottom="16dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_recommended"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:background="@android:color/white"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:layout_marginBottom="16dp"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_marginBottom="16dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="16dp"/>
 
-    <!-- Continue Your Studies Section -->
-    <TextView
-        android:id="@+id/continue_studies_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Continue Your Studies"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        <!-- Latest Study Groups Section -->
+        <TextView
+            android:id="@+id/latest_study_groups_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Latest Study Groups"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_continue_studies"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:background="@android:color/white"
-        android:padding="8dp"
-        android:clipToPadding="false"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_latest_groups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:background="@android:color/white"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:layout_marginBottom="16dp"/>
 
-</LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Continue Your Studies Section -->
+        <TextView
+            android:id="@+id/continue_studies_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continue Your Studies"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_continue_studies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:background="@android:color/white"
+            android:padding="8dp"
+            android:clipToPadding="false"/>
+
+    </LinearLayout>
+</ScrollView>

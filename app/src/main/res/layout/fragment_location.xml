@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/location_title"
@@ -10,14 +12,34 @@
         android:layout_height="wrap_content"
         android:text="Location"
         android:textSize="24sp"
-        android:padding="16dp"
+        android:padding="8dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="8dp" /> <!-- Add margin below the title -->
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:id="@+id/location_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Current Location: [Your Location Here]"
-        android:padding="16dp" />
+        android:padding="8dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Map View in a square container -->
+    <FrameLayout
+        android:id="@+id/mapContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:padding="16dp">
+
+        <fragment
+            android:id="@+id/mapFragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
 </LinearLayout>
