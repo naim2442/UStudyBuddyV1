@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- A horizontal layout for folder name, rename, and upload buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- TextView to display the folder name -->
+        <TextView
+            android:id="@+id/folder_name_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Folder Name" />
+
+
+
+        <!-- Button to upload files -->
+        <Button
+            android:id="@+id/upload_file_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload File" />
+    </LinearLayout>
+
+    <!-- ListView to display the files -->
+    <ListView
+        android:id="@+id/file_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

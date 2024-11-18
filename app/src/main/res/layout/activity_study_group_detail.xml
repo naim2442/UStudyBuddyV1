@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Group Name -->
+    <TextView
+        android:id="@+id/text_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Group Name"
+        android:textSize="18sp" />
+
+    <!-- Location -->
+    <TextView
+        android:id="@+id/text_group_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location"
+        android:textSize="16sp" />
+
+    <!-- Group Creator -->
+    <TextView
+        android:id="@+id/text_group_creator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Creator"
+        android:textSize="16sp" />
+
+    <!-- Members -->
+    <TextView
+        android:id="@+id/text_group_members"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Members"
+        android:textSize="16sp" />
+
+</LinearLayout>

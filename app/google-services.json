@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "628645466643",
+    "firebase_url": "https://ustudybuddy-dcde0-default-rtdb.firebaseio.com",
+    "project_id": "ustudybuddy-dcde0",
+    "storage_bucket": "ustudybuddy-dcde0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628645466643:android:64971aa604e53daee125e6",
+        "android_client_info": {
+          "package_name": "com.example.ustudybuddyv1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628645466643-8mvh5gqqbr8sa6uta3srhp16tuhpabu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb7mrQj7SpqtNRl9WMfi_17zTckwGg0QY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628645466643-8mvh5gqqbr8sa6uta3srhp16tuhpabu2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
