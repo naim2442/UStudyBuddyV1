@@ -28,11 +28,25 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
             // Populate the UI with group details
             groupNameTextView.setText(group.getGroupName());
             groupLocationTextView.setText(group.getLocation());
-            groupCreatorTextView.setText(group.getCreatorId());  // You can replace with the creator's name if you have it
-            groupMembersTextView.setText(group.getMembers().toString());  // Display members
+
+            // Show the creator's ID or replace it with a placeholder if necessary
+            String creatorInfo = "Created by: " + group.getCreatorId();
+            groupCreatorTextView.setText(creatorInfo);
+
+            // Display members if the list is not null or empty
+            if (group.getMembers() != null && !group.getMembers().isEmpty()) {
+                StringBuilder membersList = new StringBuilder();
+                for (String member : group.getMembers()) {
+                    membersList.append("- ").append(member).append("\n");
+                }
+                groupMembersTextView.setText(membersList.toString().trim());
+            } else {
+                groupMembersTextView.setText("No members have joined this group yet.");
+            }
         } else {
             // Log the issue or show a Toast if the object is null
-            Toast.makeText(this, "Failed to load group details.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to load group details. Please try again.", Toast.LENGTH_SHORT).show();
+            finish(); // Close the activity if data is not available
         }
     }
 }

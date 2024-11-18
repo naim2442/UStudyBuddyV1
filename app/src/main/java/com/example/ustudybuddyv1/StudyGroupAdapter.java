@@ -17,7 +17,6 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.Vi
     public StudyGroupAdapter(List<StudyGroup> studyGroups) {
         this.studyGroups = studyGroups;
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,18 +28,17 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StudyGroup group = studyGroups.get(position);
 
-        // Set the group name and member count
         holder.groupName.setText(group.getGroupName());
         holder.membersCount.setText(String.format("%d members", group.getMembersCount()));
 
-        // Handle item click to open StudyGroupDetailActivity
         holder.itemView.setOnClickListener(v -> {
-            // Pass the clicked group to the detail activity
+            // Ensure you're passing the object correctly
             Intent intent = new Intent(holder.itemView.getContext(), StudyGroupDetailActivity.class);
-            intent.putExtra("group", (CharSequence) group); // Passing the StudyGroup object
+            intent.putExtra("group", group); // Pass the StudyGroup object
             holder.itemView.getContext().startActivity(intent);
         });
     }
+
 
     @Override
     public int getItemCount() {
