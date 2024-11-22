@@ -45,6 +45,6 @@
         android:textColor="@android:color/white"
         android:background="@color/black"
         android:layout_marginTop="12dp"
-        />
+        android:onClick="onJoinGroupClicked"/>
 
 </LinearLayout>

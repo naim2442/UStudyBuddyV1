@@ -42,12 +42,7 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
 
         if (group != null) {
             displayGroupDetails(group);
-
-            // Join the group when the button is clicked
-            joinGroupButton.setOnClickListener(v -> joinStudyGroup(group.getGroupId()));
-        } else {
-            Toast.makeText(this, "Failed to load group details.", Toast.LENGTH_SHORT).show();
-            finish();
+            
         }
     }
 
@@ -67,36 +62,5 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
         }
     }
 
-    // Join the study group
-    private void joinStudyGroup(String groupId) {
-        DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("study_groups").child(groupId);
 
-        // Retrieve the group
-        groupRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                StudyGroup group = task.getResult().getValue(StudyGroup.class);
-
-                if (group != null) {
-                    // Check if the user is already a member
-                    if (group.getMembers() != null && !group.getMembers().contains(currentUserId)) {
-                        group.getMembers().add(currentUserId);  // Add the user to the group
-                        group.setMembersCount(group.getMembersCount() + 1);  // Increment member count
-
-                        // Update the group in Firebase
-                        groupRef.setValue(group)
-                                .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(this, "Joined the group successfully!", Toast.LENGTH_SHORT).show();
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Failed to join the group", Toast.LENGTH_SHORT).show();
-                                });
-                    } else {
-                        Toast.makeText(this, "You are already a member of this group.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            } else {
-                Toast.makeText(this, "Failed to retrieve group data.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }
