@@ -22,6 +22,7 @@
             <!-- If you need to specify intent-filters, you can add them here -->
         </activity>
         <activity android:name=".Activity.StudyGroupDetailActivity" />
+        <activity android:name=".Activity.SignupDetailsActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

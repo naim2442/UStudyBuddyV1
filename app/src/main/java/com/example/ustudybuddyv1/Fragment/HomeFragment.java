@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String userName = snapshot.child("username").getValue(String.class);
+                    String userName = snapshot.child("name").getValue(String.class);
                     updateWelcomeMessage(userName);
                 }
             }
