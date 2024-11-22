@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.application'
-    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services' // Correct placement
 }
 
 android {
@@ -23,30 +23,46 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // Enable DataBinding and ViewBinding
+    viewBinding {
+        enabled = true
+    }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
+    // Firebase dependencies
     implementation 'com.google.firebase:firebase-storage:21.0.1'
-    implementation 'com.google.android.gms:play-services-maps:19.0.0'
-    implementation 'com.google.android.gms:play-services-location:21.3.0'
-    apply plugin: 'com.google.gms.google-services'
-
-
-
-    implementation "androidx.room:room-runtime:2.2.5"
     implementation 'com.google.firebase:firebase-database:21.0.0'
     implementation 'com.google.firebase:firebase-auth:23.0.0'
-    annotationProcessor "androidx.room:room-compiler:2.2.5" // Or kapt if you're using Kotlin
 
+    // Google Play Services
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+
+    // Room database
+    implementation "androidx.room:room-runtime:2.6.1"  // Updated version
+    implementation 'androidx.room:room-common:2.6.1' // Match the version with room-runtime
+    annotationProcessor "androidx.room:room-compiler:2.6.1" // Updated version
+
+    // Android UI
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.room:room-common:2.6.1'
+
+    // Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+
+    // Firebase plugin at the end
+    apply plugin: 'com.google.gms.google-services'
 }

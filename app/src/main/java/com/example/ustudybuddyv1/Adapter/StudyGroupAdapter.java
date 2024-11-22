@@ -33,9 +33,10 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StudyGroup group = studyGroups.get(position);
 
-        holder.groupId.setText(group.getGroupId());
+        holder.groupName.setText(group.getGroupName());
         holder.membersCount.setText(String.format("%d members", group.getMembersCount()));
 
+        
         holder.itemView.setOnClickListener(v -> {
             // Ensure you're passing the object correctly
             Intent intent = new Intent(holder.itemView.getContext(), StudyGroupDetailActivity.class);
@@ -51,11 +52,11 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.Vi
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView groupId, membersCount;
+        TextView groupName, membersCount;
 
         ViewHolder(View itemView) {
             super(itemView);
-            groupId = itemView.findViewById(R.id.text_group_name);
+            groupName = itemView.findViewById(R.id.text_group_name);
             membersCount = itemView.findViewById(R.id.text_members_count);
         }
     }

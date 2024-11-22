@@ -71,8 +71,6 @@ public class GroupFragment extends Fragment {
 
 
 
-
-
         return view;
     }
 
