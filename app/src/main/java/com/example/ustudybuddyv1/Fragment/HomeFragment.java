@@ -42,8 +42,6 @@ public class HomeFragment extends Fragment {
         // Set up layout manager for RecyclerView
         recyclerViewLatestGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-
-
         // Fetch user data to update welcome message
         fetchUserData();
 
@@ -82,6 +80,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<StudyGroup> groups = new ArrayList<>();
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Fetch user ID here
                 for (DataSnapshot groupSnapshot : snapshot.getChildren()) {
                     StudyGroup group = groupSnapshot.getValue(StudyGroup.class);
                     if (group != null) {
@@ -89,14 +88,12 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
-
-
                 // Set up RecyclerView to scroll horizontally
                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 recyclerViewLatestGroups.setLayoutManager(horizontalLayoutManager);
 
-                // Set the adapter to display the groups
-                LatestGroupsAdapter adapter = new LatestGroupsAdapter(groups);
+                // Pass the groups list and user ID to the adapter
+                LatestGroupsAdapter adapter = new LatestGroupsAdapter(groups, userId);
                 recyclerViewLatestGroups.setAdapter(adapter);
             }
 
@@ -106,9 +103,4 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-
-
-
-
 }

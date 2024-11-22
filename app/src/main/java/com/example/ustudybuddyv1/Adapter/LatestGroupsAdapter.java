@@ -19,9 +19,11 @@ import java.util.List;
 
 public class LatestGroupsAdapter extends RecyclerView.Adapter<LatestGroupsAdapter.ViewHolder> {
     private List<StudyGroup> studyGroups;
+    private String userId;
 
-    public LatestGroupsAdapter(List<StudyGroup> studyGroups) {
+    public LatestGroupsAdapter(List<StudyGroup> studyGroups, String userId) {
         this.studyGroups = studyGroups;
+        this.userId = userId;
     }
 
     @NonNull
@@ -37,46 +39,37 @@ public class LatestGroupsAdapter extends RecyclerView.Adapter<LatestGroupsAdapte
         holder.groupName.setText(group.getGroupName());
         holder.membersCount.setText(group.getMembersCount() + " members");
 
-        // Get the current user's ID
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         // Check if the current user is the creator of the group
         if (group.getCreatorId().equals(userId)) {
-            // If the user is the creator, hide the "Join" button
-            holder.buttonJoinGroup.setVisibility(View.GONE);
+            holder.buttonJoinGroup.setVisibility(View.GONE); // Hide button if user is creator
         } else {
-            // Otherwise, show the "Join" button
-            holder.buttonJoinGroup.setVisibility(View.VISIBLE);
+            // Check if the user is already a member of the group
+            if (group.isMember(userId)) {
+                holder.buttonJoinGroup.setVisibility(View.GONE); // Hide button if user is already a member
+            } else {
+                holder.buttonJoinGroup.setVisibility(View.VISIBLE); // Show button if user is not a member
 
-            holder.buttonJoinGroup.setOnClickListener(v -> {
-                // Check if the user is already a member
-                if (!group.isMember(userId)) {
-                    // Add the user to the group
+                // Set the onClickListener for joining the group
+                holder.buttonJoinGroup.setOnClickListener(v -> {
                     group.joinGroup(userId);
 
                     // Update the group in Firebase
                     DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("study_groups").child(group.getGroupId());
                     groupRef.setValue(group).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            // Notify the user
                             Toast.makeText(v.getContext(), "You joined the group!", Toast.LENGTH_SHORT).show();
-
-                            // Update the RecyclerView with the new member count
-                            updateGroupCount(holder, group);  // Refresh the group info in the adapter
+                            updateGroupCount(holder, group);  // Update member count
+                            holder.buttonJoinGroup.setVisibility(View.GONE); // Hide button after joining
                         } else {
                             Toast.makeText(v.getContext(), "Failed to join the group.", Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else {
-                    Toast.makeText(v.getContext(), "You are already a member of this group.", Toast.LENGTH_SHORT).show();
-                }
-            });
+                });
+            }
         }
     }
 
-
     private void updateGroupCount(ViewHolder holder, StudyGroup group) {
-        // Update the view with the new member count
         holder.membersCount.setText(group.getMembersCount() + " members");
     }
 
@@ -88,13 +81,13 @@ public class LatestGroupsAdapter extends RecyclerView.Adapter<LatestGroupsAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView groupName;
         TextView membersCount;
-        Button buttonJoinGroup; // Declare the Join button
+        Button buttonJoinGroup;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             groupName = itemView.findViewById(R.id.text_group_name);
             membersCount = itemView.findViewById(R.id.text_members_count);
-            buttonJoinGroup = itemView.findViewById(R.id.button_join_group); // Initialize the button
+            buttonJoinGroup = itemView.findViewById(R.id.button_join_group);
         }
     }
 }
