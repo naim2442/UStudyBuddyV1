@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView fullNameTextView, facultyTextView, emailTextView;
+    private TextView fullNameTextView, facultyTextView, emailTextView,  studentIdTextView, universityTextView, locationPreferenceTextView;
     private ImageView profileImageView;
     private Button changePasswordButton, logoutButton;
     private FirebaseAuth mAuth;
@@ -51,6 +51,9 @@ public class ProfileFragment extends Fragment {
             profileImageView = view.findViewById(R.id.profile_image);
             changePasswordButton = view.findViewById(R.id.change_password_button);
             logoutButton = view.findViewById(R.id.logout_button);
+            studentIdTextView = view.findViewById(R.id.student_id_text_view);
+            universityTextView = view.findViewById(R.id.university_text_view);
+            locationPreferenceTextView = view.findViewById(R.id.location_preference_text_view);
 
             // Load user data
             loadUserData();
@@ -71,13 +74,22 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String fullName = dataSnapshot.child("fullName").getValue(String.class);
-                    String faculty = dataSnapshot.child("faculty").getValue(String.class);
+                    String fullName = dataSnapshot.child("name").getValue(String.class);
+                    String faculty = dataSnapshot.child("course").getValue(String.class);
                     String email = dataSnapshot.child("email").getValue(String.class);
+                    String location = dataSnapshot.child("locationPreference").getValue(String.class);
+                    String studentId = dataSnapshot.child("studentId").getValue(String.class);
+                    String university = dataSnapshot.child("university").getValue(String.class);
+
 
                     fullNameTextView.setText(fullName);
                     facultyTextView.setText(faculty);
                     emailTextView.setText(email);
+                    studentIdTextView.setText(studentId);
+                    universityTextView.setText(university);
+                    locationPreferenceTextView.setText(location);
+
+
                 } else {
                     Toast.makeText(getActivity(), "User profile not found", Toast.LENGTH_SHORT).show();
                 }
