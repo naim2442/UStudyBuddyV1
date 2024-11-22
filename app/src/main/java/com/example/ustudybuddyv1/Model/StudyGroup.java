@@ -3,101 +3,116 @@ package com.example.ustudybuddyv1.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 public class StudyGroup implements Serializable {
+    private String groupId;
     private String groupName;
-    private int membersCount;
-    private String location;
-    private String subject;
-    private String imageUrl;
     private String creatorId;
+    private String location;
     private List<String> members;
+    private int membersCount;
     private boolean isPublic;
+    private String subject;
 
-    private String id;
+    // Default constructor for Firebase
+    public StudyGroup() {
+        // Empty constructor is required for Firebase to deserialize the object
+    }
 
-    // Full constructor (for creating StudyGroup objects manually)
-    public StudyGroup(String groupName, int membersCount, String location, String subject, String imageUrl, String creatorId, List<String> members, boolean isPublic) {
+    // Constructor to initialize all fields
+    public StudyGroup(String groupId, String groupName, String creatorId, String location,
+                      List<String> members, int membersCount, boolean isPublic, String subject) {
+        this.groupId = groupId;
         this.groupName = groupName;
-        this.membersCount = membersCount;
-        this.location = location;
-        this.subject = subject;
-        this.imageUrl = imageUrl;
         this.creatorId = creatorId;
+        this.location = location;
         this.members = members;
+        this.membersCount = membersCount;
+        this.isPublic = isPublic;
+        this.subject = subject;
+    }
+
+    // Getter and Setter methods for all fields
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<String> members) {
+        this.members = members;
+    }
+
+    public int getMembersCount() {
+        return membersCount;
+    }
+
+    public void setMembersCount(int membersCount) {
+        this.membersCount = membersCount;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean isPublic) {
         this.isPublic = isPublic;
     }
 
-    // Default constructor for Firebase deserialization
-    public StudyGroup() {
-        // Initialize fields with default values
-        this.groupName = "";
-        this.membersCount = 0;
-        this.location = "";
-        this.subject = "";
-        this.imageUrl = "";
-        this.creatorId = "";
-        this.members = new ArrayList<>();
-        this.isPublic = true;
+    public String getSubject() {
+        return subject;
     }
 
-    // Simplified constructor for your case
-    public StudyGroup(String groupName, String location, String creatorId, int membersCount) {
-        this.groupName = groupName;
-        this.location = location;
-        this.creatorId = creatorId;
-        this.membersCount = membersCount;
-        this.subject = "";  // Default empty subject
-        this.imageUrl = ""; // Default empty image URL
-        this.members = new ArrayList<>(); // Initialize empty members list
-        this.isPublic = true; // Default to public when created
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    // Getters and setters (same as before)
-    public String getGroupName() { return groupName; }
-    public void setGroupName(String groupName) { this.groupName = groupName; }
-
-    public int getMembersCount() { return membersCount; }
-    public void setMembersCount(int membersCount) { this.membersCount = membersCount; }
-
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
-
-    public String getSubject() { return subject; }
-    public void setSubject(String subject) { this.subject = subject; }
-
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
-
-    public String getCreatorId() { return creatorId; }
-    public void setCreatorId(String creatorId) { this.creatorId = creatorId; }
-
-    public List<String> getMembers() { return members; }
-    public void setMembers(List<String> members) { this.members = members; }
-
-    public boolean isPublic() { return isPublic; }
-    public void setPublic(boolean isPublic) { this.isPublic = isPublic; }
-
-
-    public String getId(){
-        return id;
-    }
-
-    public void setId(String id){
-        this.id=id;
-    }
-
-    // Method to check if a user is a member
+    // Helper method to check if a user is already a member
     public boolean isMember(String userId) {
         return members != null && members.contains(userId);
     }
 
-    // Method to add a user to the group
+    // Helper method to add a user to the group
+    // In StudyGroup class:
+
     public void joinGroup(String userId) {
+        if (members == null) {
+            members = new ArrayList<>();  // Initialize the list if it's null
+        }
         if (!members.contains(userId)) {
             members.add(userId);
-            membersCount++;
+            membersCount++;  // Increment the member count
         }
     }
-
 
 }

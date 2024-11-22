@@ -21,6 +21,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.Vi
     public StudyGroupAdapter(List<StudyGroup> studyGroups) {
         this.studyGroups = studyGroups;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,7 +33,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StudyGroup group = studyGroups.get(position);
 
-        holder.groupName.setText(group.getGroupName());
+        holder.groupId.setText(group.getGroupId());
         holder.membersCount.setText(String.format("%d members", group.getMembersCount()));
 
         holder.itemView.setOnClickListener(v -> {
@@ -50,12 +51,14 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.Vi
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView groupName, membersCount;
+        TextView groupId, membersCount;
 
         ViewHolder(View itemView) {
             super(itemView);
-            groupName = itemView.findViewById(R.id.text_group_name);
+            groupId = itemView.findViewById(R.id.text_group_name);
             membersCount = itemView.findViewById(R.id.text_members_count);
         }
     }
+
+
 }

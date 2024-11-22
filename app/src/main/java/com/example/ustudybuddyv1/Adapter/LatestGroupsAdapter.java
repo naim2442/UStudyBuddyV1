@@ -55,7 +55,7 @@ public class LatestGroupsAdapter extends RecyclerView.Adapter<LatestGroupsAdapte
                     group.joinGroup(userId);
 
                     // Update the group in Firebase
-                    DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("study_groups").child(group.getGroupName());
+                    DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("study_groups").child(group.getGroupId());
                     groupRef.setValue(group).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // Notify the user

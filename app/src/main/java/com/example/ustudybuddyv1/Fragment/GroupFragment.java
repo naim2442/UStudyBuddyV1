@@ -1,5 +1,6 @@
 package com.example.ustudybuddyv1.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -70,6 +71,8 @@ public class GroupFragment extends Fragment {
 
 
 
+
+
         return view;
     }
 
@@ -77,23 +80,24 @@ public class GroupFragment extends Fragment {
         DatabaseReference studyGroupsRef = FirebaseDatabase.getInstance().getReference("study_groups");
 
         studyGroupsRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                yourGroups.clear();  // Clear previous data
-                upcomingGroups.clear();  // Clear previous data
+                yourGroups.clear();
+                upcomingGroups.clear();
 
                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     StudyGroup group = data.getValue(StudyGroup.class);
                     if (group != null) {
                         if (group.getCreatorId().equals(currentUserId)) {
-                            yourGroups.add(group);
+                            yourGroups.add(group); // Add to yourGroups if creator
                         } else if (group.getMembers() != null && group.getMembers().contains(currentUserId)) {
-                            upcomingGroups.add(group);
+                            upcomingGroups.add(group); // Add to upcomingGroups if member but not creator
                         }
                     }
                 }
-                // Notify the adapters to refresh the list
+
                 yourGroupsAdapter.notifyDataSetChanged();
                 upcomingGroupsAdapter.notifyDataSetChanged();
             }
