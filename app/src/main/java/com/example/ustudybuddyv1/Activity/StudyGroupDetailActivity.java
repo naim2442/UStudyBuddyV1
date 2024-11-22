@@ -1,10 +1,13 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Activity;
 
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ustudybuddyv1.R;
+import com.example.ustudybuddyv1.Model.StudyGroup;
 
 public class StudyGroupDetailActivity extends AppCompatActivity {
 

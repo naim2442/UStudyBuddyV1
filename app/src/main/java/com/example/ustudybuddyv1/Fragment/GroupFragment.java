@@ -1,4 +1,4 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ustudybuddyv1.Activity.StudyGroupCRUDActivity;
+import com.example.ustudybuddyv1.Adapter.StudyGroupAdapter;
+import com.example.ustudybuddyv1.R;
+import com.example.ustudybuddyv1.Model.StudyGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

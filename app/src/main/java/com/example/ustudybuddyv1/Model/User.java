@@ -1,4 +1,4 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Model;
 
 public class User {
     private String userId;

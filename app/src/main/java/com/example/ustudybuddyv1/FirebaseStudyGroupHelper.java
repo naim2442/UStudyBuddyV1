@@ -1,4 +1,5 @@
 package com.example.ustudybuddyv1;
+import com.example.ustudybuddyv1.Model.StudyGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;

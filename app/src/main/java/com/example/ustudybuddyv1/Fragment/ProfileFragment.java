@@ -1,4 +1,4 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.ustudybuddyv1.Activity.ChangePasswordActivity;
+import com.example.ustudybuddyv1.Activity.LoginActivity;
+import com.example.ustudybuddyv1.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

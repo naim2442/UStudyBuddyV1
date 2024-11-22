@@ -1,4 +1,4 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -6,15 +6,14 @@ import android.os.Bundle;
 import com.example.ustudybuddyv1.R;
 
 
-import com.example.ustudybuddyv1.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 // Import your fragment classes
-import com.example.ustudybuddyv1.HomeFragment;
-import com.example.ustudybuddyv1.GroupFragment;
-import com.example.ustudybuddyv1.LocationFragment;
-import com.example.ustudybuddyv1.FolderFragment;
-import com.example.ustudybuddyv1.ProfileFragment;
+import com.example.ustudybuddyv1.Fragment.HomeFragment;
+import com.example.ustudybuddyv1.Fragment.GroupFragment;
+import com.example.ustudybuddyv1.Fragment.LocationFragment;
+import com.example.ustudybuddyv1.Fragment.FolderFragment;
+import com.example.ustudybuddyv1.Fragment.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity {

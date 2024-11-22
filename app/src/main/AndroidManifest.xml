@@ -18,10 +18,10 @@
     android:theme="@style/Theme.UStudyBuddyV1"
     tools:targetApi="31">
 
-        <activity android:name=".StudyGroupCRUDActivity">
+        <activity android:name=".Activity.StudyGroupCRUDActivity">
             <!-- If you need to specify intent-filters, you can add them here -->
         </activity>
-        <activity android:name=".StudyGroupDetailActivity" />
+        <activity android:name=".Activity.StudyGroupDetailActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -29,7 +29,7 @@
 
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activity.SplashActivity"
             android:exported="true"> <!-- Corrected here -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,16 +37,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".Activity.ChangePasswordActivity" />
 
     <activity
-        android:name=".LoginActivity"
+        android:name=".Activity.LoginActivity"
         android:exported="true" />
     <activity
-        android:name=".MainActivity"
+        android:name=".Activity.MainActivity"
         android:exported="true" />
     <activity
-        android:name=".SignupActivity"
+        android:name=".Activity.SignupActivity"
         android:exported="true" />
 </application>
 

@@ -1,7 +1,6 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Fragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.ustudybuddyv1.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FolderFragment extends Fragment {
 

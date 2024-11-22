@@ -1,4 +1,4 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Adapter;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,6 +8,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ustudybuddyv1.Activity.StudyGroupDetailActivity;
+import com.example.ustudybuddyv1.R;
+import com.example.ustudybuddyv1.Model.StudyGroup;
 
 import java.util.List;
 

@@ -1,9 +1,11 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ustudybuddyv1.R;
 
 public class SplashActivity extends AppCompatActivity {
 

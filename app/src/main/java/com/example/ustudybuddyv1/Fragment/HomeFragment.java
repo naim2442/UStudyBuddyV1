@@ -1,4 +1,4 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Fragment;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -7,13 +7,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.ustudybuddyv1.Adapter.LatestGroupsAdapter;
+import com.example.ustudybuddyv1.R;
+import com.example.ustudybuddyv1.Model.StudyGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -77,27 +78,18 @@ public class HomeFragment extends Fragment {
 
     private void fetchPublicGroups() {
         DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference("study_groups");
-        groupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        groupsRef.orderByChild("public").equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<StudyGroup> groups = new ArrayList<>();
-                if (!snapshot.exists()) {
-                    Log.d("Firebase", "No groups data found.");
-                }
                 for (DataSnapshot groupSnapshot : snapshot.getChildren()) {
                     StudyGroup group = groupSnapshot.getValue(StudyGroup.class);
                     if (group != null) {
-                        group.setId(groupSnapshot.getKey()); // Save the key
                         groups.add(group);
                     }
                 }
 
 
-                if (groups.isEmpty()) {
-                    Log.d("Firebase", "No groups added to the list.");
-                } else {
-                    Log.d("Firebase", "Fetched " + groups.size() + " groups.");
-                }
 
                 // Set up RecyclerView to scroll horizontally
                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -110,7 +102,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Firebase", "Error fetching data: " + error.getMessage());
+                // Handle error
             }
         });
     }

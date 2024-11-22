@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
-        android:name="com.example.ustudybuddyv1.HomeFragment" />
+        android:name="com.example.ustudybuddyv1.Fragment.HomeFragment" />
 
     <!-- BottomNavigationView anchored to the bottom -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

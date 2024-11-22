@@ -1,4 +1,4 @@
-package com.example.ustudybuddyv1;
+package com.example.ustudybuddyv1.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
