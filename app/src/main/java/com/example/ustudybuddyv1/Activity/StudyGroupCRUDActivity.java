@@ -1,6 +1,8 @@
 package com.example.ustudybuddyv1.Activity;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +49,6 @@ public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapRe
         locationDisplay = findViewById(R.id.location_display);
         tagItt626 = findViewById(R.id.tag_itt626);
         tagBackend = findViewById(R.id.tag_backend);
-        tagSemester5 = findViewById(R.id.tag_semester5);
         tagSemester5 = findViewById(R.id.tag_semester5);
 
         // Set up map
@@ -82,13 +84,42 @@ public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapRe
             selectedLatitude = latLng.latitude;
             selectedLongitude = latLng.longitude;
 
-            // Decode lat/long into location name
-            // For simplicity, let's just set it to "Selected Location"
-            selectedLocationName = "Selected Location"; // Can use geocoder here to decode lat/long
-
-            // Display location name
-            locationDisplay.setText("Selected Location: " + selectedLocationName);
+            // Decode lat/long into location name using Geocoder
+            decodeLocation(selectedLatitude, selectedLongitude);
         });
+    }
+
+    private void decodeLocation(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(this);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                StringBuilder addressString = new StringBuilder();
+
+                for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                    addressString.append(address.getAddressLine(i)).append(", ");
+                }
+
+                // Remove last comma and space
+                selectedLocationName = addressString.toString().trim();
+                if (selectedLocationName.endsWith(",")) {
+                    selectedLocationName = selectedLocationName.substring(0, selectedLocationName.length() - 1);
+                }
+
+                // Display location name
+                locationDisplay.setText("Selected Location: " + selectedLocationName);
+            } else {
+                selectedLocationName = "Unable to get location name";
+                locationDisplay.setText("Selected Location: " + selectedLocationName);
+                Toast.makeText(this, "Unable to get location name", Toast.LENGTH_SHORT).show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            selectedLocationName = "Error decoding location";
+            locationDisplay.setText("Selected Location: " + selectedLocationName);
+            Toast.makeText(this, "Error decoding location", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void createGroup() {

@@ -79,7 +79,7 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
     // Display the group details
     private void displayGroupDetails(StudyGroup group) {
         groupNameTextView.setText(group.getGroupName());
-        groupLocationTextView.setText(group.getLocation());
+        groupLocationTextView.setText(group.getDecodedLocationName());
 
         if (group.getMembers() != null && !group.getMembers().isEmpty()) {
             StringBuilder membersList = new StringBuilder();
