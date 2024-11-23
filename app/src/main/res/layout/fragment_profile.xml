@@ -4,71 +4,116 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/gradient_background"
+    android:gravity="center_horizontal">
 
-    <ImageView
-        android:id="@+id/profile_image"
+    <!-- Title -->
+    <TextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Personal Profile"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/black" />
+
+    <!-- Profile Image -->
+    <RelativeLayout
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:src="@drawable/profile_image"
-        android:contentDescription="@drawable/profile_image" />
+        android:layout_marginBottom="16dp">
 
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/profile_image"
+            android:contentDescription="Profile Picture" />
+    </RelativeLayout>
+
+    <!-- Fields -->
     <TextView
         android:id="@+id/full_name_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp" />
+        android:layout_marginBottom="8dp"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:gravity="center_vertical" />
 
     <TextView
-        android:id="@+id/faculty_text_view"
-        android:layout_width="wrap_content"
+        android:id="@+id/student_id_text_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:layout_marginBottom="8dp"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:gravity="center_vertical" />
 
     <TextView
         android:id="@+id/email_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
-
-    <!-- Student ID -->
-    <TextView
-        android:id="@+id/student_id_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:textSize="16sp"
-        android:layout_marginTop="8dp" />
+        android:padding="12dp"
+        android:gravity="center_vertical" />
 
-    <!-- University -->
+    <TextView
+        android:id="@+id/location_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:gravity="center_vertical" />
+
     <TextView
         android:id="@+id/university_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:layout_marginBottom="8dp"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:gravity="center_vertical" />
 
-    <!-- Location Preference -->
     <TextView
-        android:id="@+id/location_preference_text_view"
-        android:layout_width="wrap_content"
+        android:id="@+id/course_text_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:layout_marginBottom="8dp"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:gravity="center_vertical" />
 
-    <Button
-        android:id="@+id/change_password_button"
-        android:layout_width="wrap_content"
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Change Password"
-        android:layout_marginTop="16dp" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
 
-    <Button
-        android:id="@+id/logout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:layout_marginTop="8dp" />
+        <Button
+            android:id="@+id/edit_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Edit"
+            android:backgroundTint="#4F8EF7"
+            android:textColor="@color/white"
+            android:layout_marginEnd="8dp" />
 
+        <Button
+            android:id="@+id/logout_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LOG OUT"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:textColor="@color/white"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
 </LinearLayout>

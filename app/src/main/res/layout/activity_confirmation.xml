@@ -7,14 +7,18 @@
     android:padding="16dp"
     android:weightSum="1">
 
-    <!-- Group Name Display -->
+
+    <!-- Title -->
     <TextView
         android:id="@+id/group_name_display_confirm"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Group Name"
-        android:textSize="18sp"
-        android:layout_marginBottom="10dp" />
+        android:text="Title"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginBottom="16dp"/>
+
+
 
     <!-- Group Subject Display -->
     <TextView
@@ -61,19 +65,24 @@
         android:layout_marginBottom="10dp"
         android:contentDescription="Group Image" />
 
-    <!-- Discard Button -->
-    <Button
-        android:id="@+id/discard_button_confirm"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Discard"
-        android:layout_marginBottom="10dp" />
-
-    <!-- Confirm Button -->
-    <Button
-        android:id="@+id/confirm_button_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Confirm"
-        android:layout_marginBottom="10dp" />
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button
+            android:id="@+id/discard_button_confirm"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="DISCARD"
+            android:backgroundTint="@android:color/holo_red_dark"/>
+        <Button
+            android:id="@+id/confirm_button_confirm"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="CONFIRM"
+            android:backgroundTint="@android:color/holo_green_dark"/>
+    </LinearLayout>
 </LinearLayout>

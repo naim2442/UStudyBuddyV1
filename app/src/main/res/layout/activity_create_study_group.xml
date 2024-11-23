@@ -7,6 +7,15 @@
     android:padding="16dp"
     android:weightSum="1">
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create study group"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
     <!-- Group Name Field -->
     <EditText
         android:id="@+id/group_name_input"
@@ -77,6 +86,7 @@
         android:id="@+id/upload_image_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#4F8EF7"
         android:text="Upload Group Image"
         android:layout_marginTop="16dp" />
 
@@ -85,6 +95,7 @@
         android:id="@+id/create_group_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#4F8EF7"
         android:text="Create Group"
         android:layout_marginTop="16dp" />
 

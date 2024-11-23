@@ -26,8 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView fullNameTextView, facultyTextView, emailTextView,  studentIdTextView, universityTextView, locationPreferenceTextView;
-    private ImageView profileImageView;
+    private TextView fullNameTextView, studentIdTextView, emailTextView, universityTextView, locationPreferenceTextView, courseTextView;
     private Button changePasswordButton, logoutButton;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
@@ -45,15 +44,17 @@ public class ProfileFragment extends Fragment {
             // Get user reference from Realtime Database
             databaseReference = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
 
+            // Initialize TextViews
             fullNameTextView = view.findViewById(R.id.full_name_text_view);
-            facultyTextView = view.findViewById(R.id.faculty_text_view);
-            emailTextView = view.findViewById(R.id.email_text_view);
-            profileImageView = view.findViewById(R.id.profile_image);
-            changePasswordButton = view.findViewById(R.id.change_password_button);
-            logoutButton = view.findViewById(R.id.logout_button);
             studentIdTextView = view.findViewById(R.id.student_id_text_view);
+            emailTextView = view.findViewById(R.id.email_text_view);
             universityTextView = view.findViewById(R.id.university_text_view);
-            locationPreferenceTextView = view.findViewById(R.id.location_preference_text_view);
+            locationPreferenceTextView = view.findViewById(R.id.location_text_view);
+            courseTextView = view.findViewById(R.id.course_text_view);
+
+            // Initialize Buttons
+            changePasswordButton = view.findViewById(R.id.edit_button);
+            logoutButton = view.findViewById(R.id.logout_button);
 
             // Load user data
             loadUserData();
@@ -75,21 +76,19 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String fullName = dataSnapshot.child("name").getValue(String.class);
-                    String faculty = dataSnapshot.child("course").getValue(String.class);
                     String email = dataSnapshot.child("email").getValue(String.class);
                     String location = dataSnapshot.child("locationPreference").getValue(String.class);
                     String studentId = dataSnapshot.child("studentId").getValue(String.class);
                     String university = dataSnapshot.child("university").getValue(String.class);
+                    String course = dataSnapshot.child("course").getValue(String.class);
 
-
+                    // Set data to TextViews
                     fullNameTextView.setText(fullName);
-                    facultyTextView.setText(faculty);
-                    emailTextView.setText(email);
                     studentIdTextView.setText(studentId);
-                    universityTextView.setText(university);
+                    emailTextView.setText(email);
                     locationPreferenceTextView.setText(location);
-
-
+                    universityTextView.setText(university);
+                    courseTextView.setText(course);
                 } else {
                     Toast.makeText(getActivity(), "User profile not found", Toast.LENGTH_SHORT).show();
                 }
@@ -106,7 +105,6 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
         startActivity(intent);
     }
-
 
     private void logoutUser() {
         mAuth.signOut();
