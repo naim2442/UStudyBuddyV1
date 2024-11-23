@@ -1,5 +1,6 @@
 package com.example.ustudybuddyv1.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ustudybuddyv1.Adapter.LatestGroupsAdapter;
+import com.example.ustudybuddyv1.Adapter.StudyGroupAdapter;
 import com.example.ustudybuddyv1.R;
 import com.example.ustudybuddyv1.Model.StudyGroup;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +33,11 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewLatestGroups;
     private TextView welcomeMessage;
 
+    private LatestGroupsAdapter latestGroupsAdapter;
+
+    private List<StudyGroup> yourGroups = new ArrayList<>();
+    private List<StudyGroup> upcomingGroups = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,7 +48,7 @@ public class HomeFragment extends Fragment {
         recyclerViewLatestGroups = view.findViewById(R.id.recycler_view_latest_groups);
 
         // Set up layout manager for RecyclerView
-        recyclerViewLatestGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerViewLatestGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         // Fetch user data to update welcome message
         fetchUserData();
@@ -103,4 +111,6 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+
 }

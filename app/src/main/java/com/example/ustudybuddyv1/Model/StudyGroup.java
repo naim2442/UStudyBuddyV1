@@ -9,30 +9,40 @@ public class StudyGroup implements Serializable {
     private String groupName;
     private String creatorId;
     private String location;
+    private String decodedLocationName; // Decoded name from lat/long
     private List<String> members;
     private int membersCount;
     private boolean isPublic;
     private String subject;
+    private String dateTime;
+    private String description;
+    private List<String> tags;
+    private String imageUrl; // URL for uploaded image
 
     // Default constructor for Firebase
-    public StudyGroup() {
-        // Empty constructor is required for Firebase to deserialize the object
-    }
+    public StudyGroup() {}
 
     // Constructor to initialize all fields
     public StudyGroup(String groupId, String groupName, String creatorId, String location,
-                      List<String> members, int membersCount, boolean isPublic, String subject) {
+                      String decodedLocationName, List<String> members, int membersCount,
+                      boolean isPublic, String subject, String dateTime, String description,
+                      List<String> tags, String imageUrl) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.creatorId = creatorId;
         this.location = location;
+        this.decodedLocationName = decodedLocationName;
         this.members = members;
         this.membersCount = membersCount;
         this.isPublic = isPublic;
         this.subject = subject;
+        this.dateTime = dateTime;
+        this.description = description;
+        this.tags = tags;
+        this.imageUrl = imageUrl;
     }
 
-    // Getter and Setter methods for all fields
+    // Getters and Setters for all fields
     public String getGroupId() {
         return groupId;
     }
@@ -63,6 +73,14 @@ public class StudyGroup implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getDecodedLocationName() {
+        return decodedLocationName;
+    }
+
+    public void setDecodedLocationName(String decodedLocationName) {
+        this.decodedLocationName = decodedLocationName;
     }
 
     public List<String> getMembers() {
@@ -97,14 +115,44 @@ public class StudyGroup implements Serializable {
         this.subject = subject;
     }
 
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     // Helper method to check if a user is already a member
     public boolean isMember(String userId) {
         return members != null && members.contains(userId);
     }
 
     // Helper method to add a user to the group
-    // In StudyGroup class:
-
     public void joinGroup(String userId) {
         if (members == null) {
             members = new ArrayList<>();  // Initialize the list if it's null
@@ -114,5 +162,4 @@ public class StudyGroup implements Serializable {
             membersCount++;  // Increment the member count
         }
     }
-
 }

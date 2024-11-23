@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ustudybuddyv1.R;
-import com.example.ustudybuddyv1.Study;
+import com.example.ustudybuddyv1.Model.Study;
 
 import java.util.List;
 

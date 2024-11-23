@@ -18,6 +18,9 @@
     android:theme="@style/Theme.UStudyBuddyV1"
     tools:targetApi="31">
 
+
+        <!-- Add the ConfirmationActivity declaration here -->
+        <activity android:name=".Activity.ConfirmationActivity" />
         <activity android:name=".Activity.StudyGroupCRUDActivity">
             <!-- If you need to specify intent-filters, you can add them here -->
         </activity>

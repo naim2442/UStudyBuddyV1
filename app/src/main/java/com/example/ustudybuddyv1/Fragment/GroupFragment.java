@@ -88,7 +88,8 @@ public class GroupFragment extends Fragment {
                 for (DataSnapshot data : snapshot.getChildren()) {
                     StudyGroup group = data.getValue(StudyGroup.class);
                     if (group != null) {
-                        if (group.getCreatorId().equals(currentUserId)) {
+                        // Check if the creatorId is not null and then compare
+                        if (group.getCreatorId() != null && group.getCreatorId().equals(currentUserId)) {
                             yourGroups.add(group); // Add to yourGroups if creator
                         } else if (group.getMembers() != null && group.getMembers().contains(currentUserId)) {
                             upcomingGroups.add(group); // Add to upcomingGroups if member but not creator
@@ -99,6 +100,7 @@ public class GroupFragment extends Fragment {
                 yourGroupsAdapter.notifyDataSetChanged();
                 upcomingGroupsAdapter.notifyDataSetChanged();
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
