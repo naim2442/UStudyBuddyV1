@@ -1,7 +1,10 @@
 package com.example.ustudybuddyv1.Fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +27,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class ProfileFragment extends Fragment {
 
     private TextView fullNameTextView, studentIdTextView, emailTextView, universityTextView, locationPreferenceTextView, courseTextView;
     private Button changePasswordButton, logoutButton;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
+    private ImageView profileImageView; // Declare ImageView for profile picture
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int TAKE_PICTURE_REQUEST = 2;
+    private Uri imageUri;
 
     @Nullable
     @Override
@@ -56,12 +67,19 @@ public class ProfileFragment extends Fragment {
             changePasswordButton = view.findViewById(R.id.edit_button);
             logoutButton = view.findViewById(R.id.logout_button);
 
+            // Initialize ImageView for Profile Picture
+            profileImageView = view.findViewById(R.id.image_profile_picture);
+
             // Load user data
             loadUserData();
 
             // Set up buttons
             changePasswordButton.setOnClickListener(v -> changePassword());
             logoutButton.setOnClickListener(v -> logoutUser());
+
+            // Set onClickListener for Profile Image to open a dialog for image selection
+            profileImageView.setOnClickListener(v -> showImageSelectionDialog());
+
         } else {
             // Handle user not logged in
             Toast.makeText(getActivity(), "User not logged in", Toast.LENGTH_SHORT).show();
@@ -114,5 +132,72 @@ public class ProfileFragment extends Fragment {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         getActivity().finish(); // Close current activity
+    }
+
+    private void showImageSelectionDialog() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        builder.setTitle("Choose Profile Picture")
+                .setItems(new CharSequence[]{"Take a Photo", "Choose from Gallery"}, (dialog, which) -> {
+                    if (which == 0) {
+                        // Take a photo
+                        openCamera();
+                    } else {
+                        // Choose from gallery
+                        openGallery();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, TAKE_PICTURE_REQUEST);
+        } else {
+            Toast.makeText(getContext(), "No camera app found", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == getActivity().RESULT_OK) {
+            if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
+                imageUri = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                    profileImageView.setImageBitmap(bitmap);
+                    saveImageLocally(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Failed to load image", Toast.LENGTH_SHORT).show();
+                }
+            } else if (requestCode == TAKE_PICTURE_REQUEST && data != null) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                profileImageView.setImageBitmap(photo);
+                saveImageLocally(photo);
+            }
+        }
+    }
+
+    private void saveImageLocally(Bitmap bitmap) {
+        File directory = getContext().getFilesDir(); // Use internal storage
+        File file = new File(directory, "profile_picture.png");
+
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos); // Save the bitmap as a PNG file
+            Toast.makeText(getContext(), "Profile picture saved locally", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "Failed to save image", Toast.LENGTH_SHORT).show();
+        }
     }
 }
