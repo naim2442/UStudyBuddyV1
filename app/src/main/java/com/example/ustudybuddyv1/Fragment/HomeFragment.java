@@ -49,6 +49,21 @@ public class HomeFragment extends Fragment {
 
         // Set up layout manager for RecyclerView
         recyclerViewLatestGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+// Inside onCreateView or any method where the view is set up
+
+        TextView latestStudyGroupsTitle = view.findViewById(R.id.latest_study_groups_title);
+        latestStudyGroupsTitle.setOnClickListener(v -> {
+            // Navigate to the fragment that shows all study groups
+            AllStudyGroupsFragment allStudyGroupsFragment = new AllStudyGroupsFragment();
+
+            // If you're using Fragment, replace the current fragment with the new one
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, allStudyGroupsFragment)
+                    .addToBackStack(null) // Optional: adds to back stack for navigation
+                    .commit();
+        });
+
+
 
         // Fetch user data to update welcome message
         fetchUserData();
@@ -96,12 +111,18 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
+                // Limit the groups to only 3 for the home page
+                List<StudyGroup> limitedGroups = new ArrayList<>();
+                for (int i = 0; i < Math.min(groups.size(), 3); i++) {
+                    limitedGroups.add(groups.get(i));
+                }
+
                 // Set up RecyclerView to scroll horizontally
                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 recyclerViewLatestGroups.setLayoutManager(horizontalLayoutManager);
 
-                // Pass the groups list and user ID to the adapter
-                LatestGroupsAdapter adapter = new LatestGroupsAdapter(groups, userId);
+                // Pass the limited groups list and user ID to the adapter
+                LatestGroupsAdapter adapter = new LatestGroupsAdapter(limitedGroups, userId);
                 recyclerViewLatestGroups.setAdapter(adapter);
             }
 
@@ -111,6 +132,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 
 
 }

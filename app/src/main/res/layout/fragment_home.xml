@@ -52,7 +52,9 @@
             android:text="Latest Study Groups"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:focusable="true"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_latest_groups"
