@@ -45,9 +45,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         // Initialize the map fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map_view);
+                .findFragmentById(R.id.mapView);
         if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
+            mapFragment.getMapAsync(this); // This will trigger onMapReady when the map is ready
         }
 
         // Handle Join button click
