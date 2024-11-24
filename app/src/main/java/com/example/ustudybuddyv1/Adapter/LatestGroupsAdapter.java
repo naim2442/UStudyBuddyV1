@@ -1,6 +1,7 @@
 package com.example.ustudybuddyv1.Adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ustudybuddyv1.Activity.GroupDetailsActivity;
 import com.example.ustudybuddyv1.R;
 import com.example.ustudybuddyv1.Model.StudyGroup;
 import com.google.android.gms.common.util.Strings;
@@ -50,6 +52,12 @@ public class LatestGroupsAdapter extends RecyclerView.Adapter<LatestGroupsAdapte
         // Get the current user's ID
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
+        // Handle item click to navigate to Group Details Activity
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), GroupDetailsActivity.class);
+            intent.putExtra("studyGroup", group); // Pass the study group data
+            holder.itemView.getContext().startActivity(intent);
+        });
         // Handle Join Button visibility
         if (group.getCreatorId().equals(userId) || group.isMember(userId)) {
             holder.buttonJoinGroup.setVisibility(View.GONE);

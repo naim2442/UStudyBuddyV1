@@ -35,10 +35,17 @@
         <!-- Add the ConfirmationActivity declaration here -->
         <activity android:name=".Activity.ConfirmationActivity" />
         <activity android:name=".Activity.StudyGroupCRUDActivity">
+
             <!-- If you need to specify intent-filters, you can add them here -->
         </activity>
         <activity android:name=".Activity.StudyGroupDetailActivity" />
         <activity android:name=".Activity.SignupDetailsActivity"/>
+
+
+        <activity android:name=".Activity.GroupDetailsActivity">
+            <!-- If you want to customize it, you can add intent filters or other properties -->
+        </activity>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
