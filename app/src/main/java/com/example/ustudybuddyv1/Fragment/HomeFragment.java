@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ustudybuddyv1.Adapter.LatestGroupsAdapter;
+import com.example.ustudybuddyv1.Adapter.RecommendedVideosAdapter;
 import com.example.ustudybuddyv1.Adapter.StudyGroupAdapter;
+import com.example.ustudybuddyv1.Model.Video;
 import com.example.ustudybuddyv1.R;
 import com.example.ustudybuddyv1.Model.StudyGroup;
+import com.example.ustudybuddyv1.Utils.YoutubeManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,8 +34,10 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private RecyclerView recyclerViewLatestGroups;
+    private RecyclerView recyclerViewLatestGroups, recyclerViewRecommendedVideos;
     private TextView welcomeMessage;
+
+    private List<Video> recommendedVideos = new ArrayList<>();
 
     private LatestGroupsAdapter latestGroupsAdapter;
 
@@ -46,10 +52,32 @@ public class HomeFragment extends Fragment {
         // Initialize views
         welcomeMessage = view.findViewById(R.id.welcome_message);
         recyclerViewLatestGroups = view.findViewById(R.id.recycler_view_latest_groups);
+        recyclerViewRecommendedVideos = view.findViewById(R.id.recycler_view_recommended);
 
         // Set up layout manager for RecyclerView
         recyclerViewLatestGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-// Inside onCreateView or any method where the view is set up
+        recyclerViewRecommendedVideos.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+// Initialize the recommended videos title
+        TextView recommendedVideosTitle = view.findViewById(R.id.recommended_videos_title);
+
+// Set click listener to navigate to AllRecommendedVideosFragment
+        recommendedVideosTitle.setOnClickListener(v -> {
+            AllVideosFragment allRecommendedVideosFragment = new AllVideosFragment();
+
+            // Navigate to the new fragment
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, allRecommendedVideosFragment)
+                    .addToBackStack(null) // Adds to back stack for proper navigation
+                    .commit();
+        });
+
+
+
+
+
+
 
         TextView latestStudyGroupsTitle = view.findViewById(R.id.latest_study_groups_title);
         latestStudyGroupsTitle.setOnClickListener(v -> {
@@ -70,6 +98,9 @@ public class HomeFragment extends Fragment {
 
         // Fetch public groups to display in the latest groups RecyclerView
         fetchPublicGroups();
+
+        // Fetch recommended videos
+        fetchRecommendedVideos();
 
         return view;
     }
@@ -132,7 +163,33 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+    private void fetchRecommendedVideos() {
+        YoutubeManager youTubeManager = new YoutubeManager();
+        youTubeManager.searchVideos("Educational videos", new YoutubeManager.VideoSearchCallback() {
+            @Override
+            public void onVideosFetched(List<Video> videos) {
+                if (videos != null && !videos.isEmpty()) {
+                    recommendedVideos = videos;
+
+                    // Set up the adapter for recommended videos
+                    RecommendedVideosAdapter adapter = new RecommendedVideosAdapter(recommendedVideos);
+                    recyclerViewRecommendedVideos.setAdapter(adapter);
+                } else {
+                    // Safely check if the fragment's context is available
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(), "No educational videos found!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e("HomeFragment", "Context is null, cannot show Toast");
+                    }
+                }
+            }
+        });
+    }
+
+
 
 
 
 }
+
+

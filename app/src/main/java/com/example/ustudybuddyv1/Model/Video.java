@@ -2,18 +2,38 @@ package com.example.ustudybuddyv1.Model;
 
 public class Video {
     private String title;
-    private int thumbnailResId; // Resource ID for the thumbnail image
+    private String url;
+    private String thumbnailUrl;
 
-    public Video(String title, int thumbnailResId) {
+    // Constructor
+    public Video(String title, String url, String thumbnailUrl) {
         this.title = title;
-        this.thumbnailResId = thumbnailResId;
+        this.url = url;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
+    // Getter and setter methods
     public String getTitle() {
         return title;
     }
 
-    public int getThumbnailResId() {
-        return thumbnailResId;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }
