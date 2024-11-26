@@ -1,102 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:weightSum="1">
+    android:padding="16dp">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create study group"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Group Name Field -->
-    <EditText
-        android:id="@+id/group_name_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Group Name" />
-
-    <!-- Group Subject Field -->
-    <EditText
-        android:id="@+id/group_subject_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Subject" />
-
-    <!-- Group Description Field -->
-    <EditText
-        android:id="@+id/group_description_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description" />
-
-    <!-- Map Fragment for selecting location -->
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="381dp"
-        android:layout_height="216dp"
-        android:layout_marginTop="16dp" />
-
-    <!-- Location selected display -->
-    <TextView
-        android:id="@+id/location_display"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Selected Location: Not set"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/black" />
-
-    <!-- Tags Selection (Checkboxes) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp">
+        android:orientation="vertical">
 
-        <!-- Predefined tags -->
-        <CheckBox
-            android:id="@+id/tag_itt626"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ITT626" />
+            android:text="Create Study Group"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
-        <CheckBox
-            android:id="@+id/tag_backend"
-            android:layout_width="wrap_content"
+        <!-- Group Name Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/RoundedTextInputLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Backend" />
+            android:hint="Group Name">
 
-        <CheckBox
-            android:id="@+id/tag_semester5"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Subject Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/RoundedTextInputLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Semester 5" />
+            android:hint="Subject"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_subject_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Description Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/RoundedTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_description_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:lines="3" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Location Display -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/RoundedTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Selected Location">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/location_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:inputType="none"
+                android:background="@android:color/transparent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Map Fragment for selecting location -->
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="216dp"
+            android:layout_marginTop="16dp" />
+
+
+
+        <!-- Tags Selection (Checkboxes) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <!-- Predefined tags -->
+            <CheckBox
+                android:id="@+id/tag_itt626"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ITT626" />
+
+            <CheckBox
+                android:id="@+id/tag_backend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Backend" />
+
+            <CheckBox
+                android:id="@+id/tag_semester5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Semester 5" />
+        </LinearLayout>
+
+        <!-- Upload Group Image Button -->
+        <Button
+            android:id="@+id/upload_image_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#4F8EF7"
+            android:background="@drawable/rounded_button"
+            android:text="Upload Group Image"
+            android:layout_marginTop="16dp" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/create_group_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#4F8EF7"
+            android:text="Create Group"
+            android:background="@drawable/rounded_button"
+            android:layout_marginTop="16dp" />
     </LinearLayout>
-
-    <!-- Upload Group Image Button -->
-    <Button
-        android:id="@+id/upload_image_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#4F8EF7"
-        android:text="Upload Group Image"
-        android:layout_marginTop="16dp" />
-
-    <!-- Submit Button -->
-    <Button
-        android:id="@+id/create_group_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#4F8EF7"
-        android:text="Create Group"
-        android:layout_marginTop="16dp" />
-
-</LinearLayout>
+</ScrollView>

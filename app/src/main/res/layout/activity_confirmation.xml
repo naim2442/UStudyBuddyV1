@@ -20,6 +20,17 @@
 
 
 
+    <!-- Image Display (if available) -->
+    <ImageView
+        android:id="@+id/group_image_display_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/logo"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="Group Image" />
+
+
+
     <!-- Group Subject Display -->
     <TextView
         android:id="@+id/group_subject_display_confirm"
@@ -56,14 +67,7 @@
         android:textSize="16sp"
         android:layout_marginBottom="10dp" />
 
-    <!-- Image Display (if available) -->
-    <ImageView
-        android:id="@+id/group_image_display_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/logo"
-        android:layout_marginBottom="10dp"
-        android:contentDescription="Group Image" />
+
 
     <LinearLayout
         android:layout_width="match_parent"

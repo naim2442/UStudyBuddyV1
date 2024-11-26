@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:text="Join Group"
             android:textColor="@android:color/white"
-            android:background="@color/black"
+            android:background="@drawable/rounded_button"
             android:paddingHorizontal="24dp"
             android:paddingVertical="12dp" />
     </LinearLayout>

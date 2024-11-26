@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_margin="16dp"
+        android:background="@drawable/rounded_button"
         android:text="Create New Folder" />
 
     <!-- ListView for displaying files -->

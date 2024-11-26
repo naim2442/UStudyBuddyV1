@@ -31,7 +31,8 @@
                 android:id="@+id/btn_create_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+ Create Study Group" />
+                android:text="+ Create Study Group"
+                android:background="@drawable/rounded_button"/>
         </LinearLayout>
 
         <View

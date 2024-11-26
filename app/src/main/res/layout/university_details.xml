@@ -32,6 +32,7 @@
     <!-- University Spinner -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/university_input"
+        style="@style/RoundedTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -49,6 +50,7 @@
     <!-- Course Spinner -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/course_input"
+        style="@style/RoundedTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -66,6 +68,7 @@
     <!-- Location Preference Spinner -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/location_preference_input"
+        style="@style/RoundedTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/course_input"
@@ -82,6 +85,7 @@
     <!-- Sign Up Button -->
     <Button
         android:id="@+id/signup_button"
+        android:background="@drawable/rounded_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="88dp"

@@ -12,19 +12,18 @@
         android:id="@+id/app_logo"
         android:layout_width="139dp"
         android:layout_height="111dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
         android:src="@drawable/app_logo_alt"
         app:layout_constraintBottom_toTopOf="@id/welcome_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="16dp" />
 
     <!-- Welcome Text -->
     <TextView
         android:id="@+id/welcome_text"
-        android:layout_width="126dp"
-        android:layout_height="71dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="WELCOME"
         android:textColor="#2A3A59"
         android:textSize="24sp"
@@ -35,6 +34,7 @@
     <!-- Email Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_input"
+        style="@style/RoundedTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -46,15 +46,17 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/baseline_mail_24"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
-            android:textColor="#2A3A59"
-            android:drawableStart="@drawable/baseline_mail_24" /> <!-- Add email icon here -->
+            android:textColor="#2A3A59" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Password Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_input"
+        style="@style/RoundedTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -66,25 +68,27 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_password"
             android:hint="Password"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="#2A3A59" /> <!-- Add password icon here -->
+            android:textColor="#2A3A59"
+            android:drawableStart="@drawable/baseline_lock_24" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <!-- Login Button -->
 
     <!-- Forgot Password -->
 
-    <!-- Register Link -->
+    <!-- Register Button -->
+
+    <!-- Company Trademark and Logo at the Bottom -->
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="195dp"
         android:layout_height="46dp"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="140dp"
+        android:background="@drawable/rounded_button"
         android:backgroundTint="#4F8EF7"
         android:text="Log In"
         android:textColor="#FFFFFF"
@@ -94,15 +98,16 @@
 
     <Button
         android:id="@+id/forgot_password"
-        android:layout_width="183dp"
+        android:layout_width="147dp"
         android:layout_height="42dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="40dp"
         android:backgroundTint="#FFFFFF"
         android:text="Forgot Password"
         android:textColor="#000000"
-        android:textSize="14sp"
+
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_button" />
 
@@ -110,14 +115,45 @@
         android:id="@+id/register_button"
         android:layout_width="129dp"
         android:layout_height="41dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="28dp"
         android:backgroundTint="#808080"
         android:text="Register"
         android:textColor="#FFFFFF"
+
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/forgot_password" />
 
+    <LinearLayout
+        android:id="@+id/bottom_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp">
+
+        <!-- Trademark Text -->
+        <TextView
+            android:id="@+id/trademark_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="© 2024 NeoTech Limited"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Company Logo -->
+        <ImageView
+            android:id="@+id/company_logo"
+            android:layout_width="20dp"
+            android:layout_height="26dp"
+            android:contentDescription="Company Logo"
+            android:src="@drawable/company_logo" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
