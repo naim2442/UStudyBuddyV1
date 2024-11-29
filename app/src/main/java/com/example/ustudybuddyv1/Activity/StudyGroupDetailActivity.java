@@ -1,12 +1,15 @@
 package com.example.ustudybuddyv1.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,18 +27,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class StudyGroupDetailActivity extends AppCompatActivity {
 
+    private ImageButton attachFileButton; // button for file attachment
+    private static final int FILE_REQUEST_CODE = 123;
     private TextView groupNameTextView;
     private RecyclerView chatRecyclerView;
     private EditText messageInput;
     private ImageButton sendMessageButton;
-    private Button viewMembersButton, viewDetailsButton, viewFilesButton; // New button for viewing members
+    private Button viewMembersButton, viewDetailsButton, viewFilesButton;
 
     private DatabaseReference studyGroupsRef, chatRef;
     private String currentUserId;
@@ -47,7 +55,7 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_study_group_detail);
 
-        // Firebase initializationa
+        // Firebase initialization
         studyGroupsRef = FirebaseDatabase.getInstance().getReference("study_groups");
         currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
@@ -56,15 +64,19 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
         chatRecyclerView = findViewById(R.id.chatRecyclerView);
         messageInput = findViewById(R.id.message_input);
         sendMessageButton = findViewById(R.id.send_message_button);
-        viewMembersButton = findViewById(R.id.button_view_members); // Initialize new button
+        viewMembersButton = findViewById(R.id.button_view_members);
         viewDetailsButton = findViewById(R.id.button_view_details);
+        viewFilesButton = findViewById(R.id.button_view_files);
+        attachFileButton = findViewById(R.id.attach_file_button);  // Initialize the attach button
+
+        // Attach file button listener
+        attachFileButton.setOnClickListener(v -> openFilePicker());
 
         // Get the group data passed from the previous activity
         StudyGroup group = (StudyGroup) getIntent().getSerializableExtra("group");
 
         if (group != null) {
             displayGroupDetails(group);
-
 
             // Initialize chat reference based on group ID
             chatRef = studyGroupsRef.child(group.getGroupId()).child("messages");
@@ -88,23 +100,126 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
             }
         });
 
-        viewDetailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create an Intent to navigate to GroupDetailsActivity
-                Intent intent = new Intent(StudyGroupDetailActivity.this, GroupDetailsActivity.class);
-
-                // Pass the StudyGroup object via Intent
-                intent.putExtra("studyGroup", group);  // 'group' is the StudyGroup object from the intent
-
-                // Start the GroupDetailsActivity
+        // View files
+        viewFilesButton.setOnClickListener(v -> {
+            if (group != null) {
+                Intent intent = new Intent(StudyGroupDetailActivity.this, ViewFilesActivity.class);
+                intent.putExtra("GROUP_ID", group.getGroupId()); // Pass the group ID
                 startActivity(intent);
             }
         });
 
+        // View group details button click listener
+        viewDetailsButton.setOnClickListener(v -> {
+            // Create an Intent to navigate to GroupDetailsActivity
+            Intent intent = new Intent(StudyGroupDetailActivity.this, GroupDetailsActivity.class);
+
+            // Pass the StudyGroup object via Intent
+            intent.putExtra("studyGroup", group);  // 'group' is the StudyGroup object from the intent
+
+            // Start the GroupDetailsActivity
+            startActivity(intent);
+        });
+    }
+
+    private void openFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");  // Allow any file type
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, FILE_REQUEST_CODE);
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == FILE_REQUEST_CODE && resultCode == RESULT_OK) {
+            Uri fileUri = data.getData();
+            if (fileUri != null) {
+                String fileExtension = getFileExtension(fileUri);
+                String mimeType = getContentResolver().getType(fileUri);
+
+                // Check if file type is valid
+                if (isValidFileType(fileExtension, mimeType)) {
+                    // Show confirmation dialog
+                    showFileConfirmationDialog(fileUri, fileExtension, mimeType);
+                } else {
+                    Toast.makeText(this, "Invalid file type. Please upload an image, PDF, DOCX, or Excel file.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    private void showFileConfirmationDialog(Uri fileUri, String fileExtension, String mimeType) {
+        // Removed the unnecessary redeclaration of fileExtension
+
+        if (isValidFileType(fileExtension, mimeType)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm File Upload")
+                    .setMessage("Are you sure you want to upload this " + fileExtension.toUpperCase() + " file?")
+                    .setPositiveButton("Yes", (dialog, which) -> uploadFileToFirebase(fileUri))
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        } else {
+            Toast.makeText(this, "Invalid file type. Please upload an image, PDF, DOCX, or Excel file.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getFileExtension(Uri fileUri) {
+        String extension = null;
+        String fileName = fileUri.getLastPathSegment();
+
+        if (fileName != null && fileName.contains(".")) {
+            extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        }
+        return extension;
+    }
+
+    private boolean isValidFileType(String extension, String mimeType) {
+        // Check file extension
+        if (extension != null) {
+            extension = extension.toLowerCase();
+        }
+
+        // Check if the file type matches image extensions or allowed document types
+        return (extension != null &&
+                (extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png") ||
+                        extension.equals("pdf") || extension.equals("docx") || extension.equals("xls") ||
+                        extension.equals("xlsx") || mimeType != null && mimeType.startsWith("image/")));
+    }
+
+
+    // Upload to Firebase
+    private void uploadFileToFirebase(Uri fileUri) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("group_files").child(System.currentTimeMillis() + "_file");
+
+        storageRef.putFile(fileUri)
+                .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String fileUrl = uri.toString();
+
+                    // Save file details in Firebase Database
+                    saveFileDetailsToDatabase(fileUrl);
+                }))
+                .addOnFailureListener(e -> Toast.makeText(StudyGroupDetailActivity.this, "File upload failed", Toast.LENGTH_SHORT).show());
+    }
+
+
+    private void saveFileDetailsToDatabase(String fileUrl) {
+        String fileName = "Uploaded File";  // You can customize this based on the file
+        File file = new File(fileName, fileUrl);  // Create a File object
+
+        DatabaseReference filesRef = studyGroupsRef.child("GROUP_ID").child("files");  // Reference to the "files" node
+        filesRef.push().setValue(file);  // Store the file details in the database
+    }
+
+    // Send file message
+    private void sendFileMessage(String fileUrl) {
+        String messageText = "Sent a file";  // You can use a custom message or leave it as is
+        Message fileMessage = new Message(currentUserId, messageText, System.currentTimeMillis(), fileUrl);
+        chatRef.push().setValue(fileMessage);  // Send the file message
+    }
 
     // Display the group details
     private void displayGroupDetails(StudyGroup group) {
@@ -167,25 +282,17 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
         });
     }
 
-
-
-    // Show members in a dialog
     private void showMembersDialog(List<String> membersList) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Members");
+        String[] membersArray = membersList.toArray(new String[0]);
 
-        if (membersList.isEmpty()) {
-            builder.setMessage("No members have joined this group yet.");
-        } else {
-            String[] membersArray = membersList.toArray(new String[0]);
-            builder.setItems(membersArray, null);
-        }
-
-        builder.setPositiveButton("Close", (dialog, which) -> dialog.dismiss());
-        builder.create().show();
+        new AlertDialog.Builder(this)
+                .setTitle("Group Members")
+                .setItems(membersArray, null)
+                .setPositiveButton("OK", null)
+                .show();
     }
 
-    // Load chat messages from Firebase
+    // Load chat messages
     private void loadChatMessages() {
         chatRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -193,8 +300,8 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
                 Message message = snapshot.getValue(Message.class);
                 if (message != null) {
                     messagesList.add(message);
-                    chatAdapter.notifyDataSetChanged();
-                    chatRecyclerView.smoothScrollToPosition(messagesList.size() - 1);
+                    chatAdapter.notifyDataSetChanged(); // Notify adapter about the new message
+                    chatRecyclerView.scrollToPosition(messagesList.size() - 1);  // Scroll to the latest message
                 }
             }
 
@@ -212,13 +319,15 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
         });
     }
 
-    // Send a message
+    // Send a text message
     private void sendMessage() {
         String messageText = messageInput.getText().toString().trim();
         if (!messageText.isEmpty()) {
-            Message message = new Message(currentUserId, messageText, System.currentTimeMillis());
-            chatRef.push().setValue(message);
-            messageInput.setText("");
+            Message newMessage = new Message(currentUserId, messageText, System.currentTimeMillis(), null);
+            chatRef.push().setValue(newMessage); // Send the text message
+            messageInput.setText(""); // Clear input field after sending
+        } else {
+            Toast.makeText(this, "Message can't be empty", Toast.LENGTH_SHORT).show();
         }
     }
 }

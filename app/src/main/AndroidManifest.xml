@@ -40,7 +40,7 @@
         </activity>
         <activity android:name=".Activity.StudyGroupDetailActivity" />
         <activity android:name=".Activity.SignupDetailsActivity"/>
-
+        <activity android:name=".Activity.ViewFilesActivity"/>
 
         <activity android:name=".Activity.GroupDetailsActivity">
             <!-- If you want to customize it, you can add intent filters or other properties -->
