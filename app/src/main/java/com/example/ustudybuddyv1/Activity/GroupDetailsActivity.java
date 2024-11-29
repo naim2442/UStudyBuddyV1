@@ -1,6 +1,7 @@
 package com.example.ustudybuddyv1.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -8,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ustudybuddyv1.Model.StudyGroup;
+import com.example.ustudybuddyv1.Model.User;  // Assuming User model exists
 import com.example.ustudybuddyv1.R;
 import com.example.ustudybuddyv1.databinding.ActivityGroupDetailsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,8 +19,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
 
 import java.util.Objects;
 
@@ -60,6 +65,27 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         binding.textGroupSubject.setText(studyGroup.getSubject());
         binding.textGroupDescription.setText(studyGroup.getDescription());
 
+        // Fetch creator's name and course from User model using Firebase
+        String creatorId = studyGroup.getCreatorId();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(creatorId);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User creator = dataSnapshot.getValue(User.class);
+                if (creator != null) {
+                    // Set creator's name and course
+                    binding.textGroupCreator.setText(creator.getName());  // Assuming getName() returns creator's name
+                    binding.textGroupCourse.setText(creator.getCourse());  // Assuming getCourse() returns creator's course
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("GroupDetailsActivity", "Failed to fetch creator's details.", databaseError.toException());
+            }
+        });
+
         // Decoded location or fallback to location if decoding is unavailable
         String locationName = studyGroup.getDecodedLocationName() != null
                 ? studyGroup.getDecodedLocationName()
@@ -94,6 +120,18 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
+
+        if (studyGroup != null) {
+            String location = studyGroup.getLocation();  // Access location only if studyGroup is not null
+            if (location != null) {
+                // Handle the map setup using the location
+            } else {
+                // Handle case where location is null (optional)
+            }
+        } else {
+            Log.e("GroupDetailsActivity", "StudyGroup is null.");
+            // Handle case where studyGroup is null (optional, maybe show a default message or navigate back)
+        }
 
         // Add a pin for the group location
         if (studyGroup.getLocation() != null) {

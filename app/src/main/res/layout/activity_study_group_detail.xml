@@ -26,32 +26,45 @@
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
-        <!-- Location -->
-        <TextView
-            android:id="@+id/text_group_location"
-            android:layout_width="wrap_content"
+        <!-- Button Section (Members, Details, Files) -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
 
-        <!-- Group Creator -->
-        <TextView
-            android:id="@+id/text_group_creator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Creator"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            <!-- View Members Button -->
+            <Button
+                android:id="@+id/button_view_members"
+                android:textSize="10sp"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:text="View Members" />
 
-        <!-- Members -->
-        <TextView
-            android:id="@+id/text_group_members"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Members"
-            android:textSize="16sp"
-            android:layout_marginBottom="16dp" />
+            <!-- View Details Button -->
+            <Button
+                android:id="@+id/button_view_details"
+                android:layout_width="0dp"
+                android:textSize="10sp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:text="View Details" />
+
+            <!-- View Files Button -->
+            <Button
+                android:id="@+id/button_view_files"
+                android:textSize="10sp"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:text="View Files" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Separator Line -->
@@ -101,7 +114,6 @@
                 android:layout_weight="1"
                 android:hint="Type a message"
                 android:padding="10dp"
-
                 android:layout_marginEnd="8dp" />
 
             <!-- Send Button -->

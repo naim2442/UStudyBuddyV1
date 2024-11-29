@@ -31,6 +31,24 @@
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
+        <!-- Creator Name -->
+        <TextView
+            android:id="@+id/text_group_creator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Creator Name"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Course -->
+        <TextView
+            android:id="@+id/text_group_course"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Course"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
         <!-- Subject -->
         <TextView
             android:id="@+id/text_group_subject"
@@ -68,7 +86,6 @@
             android:layout_marginBottom="16dp" />
 
         <!-- Map View -->
-
         <FrameLayout
             android:id="@+id/mapContainer"
             android:layout_width="match_parent"
@@ -84,7 +101,6 @@
                 android:layout_height="match_parent" />
 
         </FrameLayout>
-
 
         <!-- Join Group Button -->
         <Button
