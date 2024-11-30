@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ustudybuddyv1.Adapter.FileAdapter;
-import com.example.ustudybuddyv1.Model.File;  // Make sure you have a 'File' model to store file data
+import java.io.File;  // Ensure this is the java.io.File class for file handling
 import com.example.ustudybuddyv1.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

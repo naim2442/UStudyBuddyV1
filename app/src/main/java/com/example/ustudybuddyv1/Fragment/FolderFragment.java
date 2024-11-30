@@ -1,6 +1,8 @@
 package com.example.ustudybuddyv1.Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,51 +12,42 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.ustudybuddyv1.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 
 public class FolderFragment extends Fragment {
 
     private static final String PREFS_NAME = "FolderPrefs";
-    private static final String FOLDERS_KEY = "folders";
+    private static final String FOLDER_KEY = "folders";  // SharedPreferences key
 
     private ListView fileList;
     private Button createFolderButton;
     private ArrayList<String> folderNames;
     private ArrayAdapter<String> adapter;
 
-    private FirebaseDatabase database;
-    private DatabaseReference foldersRef;
-    private FirebaseAuth auth;
+    private SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_folder, container, false);
 
-        // Initialize Firebase components
-        auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        foldersRef = database.getReference("users").child(auth.getCurrentUser().getUid()).child("folders");
+        // Initialize SharedPreferences
+        sharedPreferences = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
         // Initialize UI components
         fileList = view.findViewById(R.id.file_list);
         createFolderButton = view.findViewById(R.id.create_folder_button);
 
-        // Load folder names from Firebase
+        // Initialize the folder names list and load data
         folderNames = new ArrayList<>();
-        loadFoldersFromFirebase();
+        loadFoldersFromPreferences();
 
         // Set up the custom adapter for the ListView
         adapter = new ArrayAdapter<>(getActivity(), R.layout.folder_item, R.id.folder_name, folderNames);
@@ -83,25 +76,28 @@ public class FolderFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Reload folder names when the fragment is resumed
-        loadFoldersFromFirebase();
+        loadFoldersFromPreferences();
     }
 
-    private void loadFoldersFromFirebase() {
-        foldersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                folderNames.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    folderNames.add(snapshot.getKey());
-                }
-                adapter.notifyDataSetChanged();
-            }
+    private void loadFoldersFromPreferences() {
+        // Clear the existing list before loading new data
+        folderNames.clear();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Failed to load folders", Toast.LENGTH_SHORT).show();
+        // Load the stored folder names from SharedPreferences
+        String foldersString = sharedPreferences.getString(FOLDER_KEY, "");
+        if (!foldersString.isEmpty()) {
+            String[] folders = foldersString.split(",");
+            for (String folder : folders) {
+                if (!folder.trim().isEmpty()) {
+                    folderNames.add(folder);
+                }
             }
-        });
+        }
+
+        // Notify adapter that data has changed
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     // Show a dialog to input a custom folder name
@@ -130,51 +126,28 @@ public class FolderFragment extends Fragment {
         builder.show();
     }
 
-    // Create a new folder in Firebase
+    // Create a new folder locally and store it in SharedPreferences
     private void createNewFolder(String folderName) {
-        foldersRef.child(folderName).setValue(true)
-                .addOnSuccessListener(aVoid -> {
-                    folderNames.add(folderName);
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(getActivity(), folderName + " created", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to create folder", Toast.LENGTH_SHORT).show());
+        folderNames.add(folderName);
+        saveFoldersToPreferences();
+        adapter.notifyDataSetChanged();
+        Toast.makeText(getActivity(), folderName + " created", Toast.LENGTH_SHORT).show();
     }
 
-    private void showRenameDialog(String oldName, int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Rename Folder");
+    // Save the folder list back to SharedPreferences
+    private void saveFoldersToPreferences() {
+        // Convert the list of folder names into a comma-separated string
+        StringBuilder foldersString = new StringBuilder();
+        for (String folder : folderNames) {
+            foldersString.append(folder).append(",");
+        }
 
-        final EditText input = new EditText(getActivity());
-        input.setText(oldName);
-        builder.setView(input);
+        // Remove the last comma if there are folders in the list
+        if (foldersString.length() > 0) {
+            foldersString.deleteCharAt(foldersString.length() - 1);
+        }
 
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            String newFolderName = input.getText().toString().trim();
-            if (!newFolderName.isEmpty()) {
-                renameFolder(oldName, newFolderName, position);
-            } else {
-                Toast.makeText(getActivity(), "Folder name cannot be empty", Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-
-        builder.show();
-    }
-
-    private void renameFolder(String oldName, String newName, int position) {
-        // Firebase does not directly support renaming keys, so delete and re-add the folder
-        foldersRef.child(oldName).removeValue()
-                .addOnSuccessListener(aVoid -> {
-                    foldersRef.child(newName).setValue(true)
-                            .addOnSuccessListener(aVoid1 -> {
-                                folderNames.set(position, newName);
-                                adapter.notifyDataSetChanged();
-                                Toast.makeText(getActivity(), "Folder renamed to: " + newName, Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to rename folder", Toast.LENGTH_SHORT).show());
-                })
-                .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to rename folder", Toast.LENGTH_SHORT).show());
+        sharedPreferences.edit().putString(FOLDER_KEY, foldersString.toString()).apply();
     }
 
     private void showDeleteConfirmation(String folderName, int position) {
@@ -182,13 +155,10 @@ public class FolderFragment extends Fragment {
                 .setTitle("Delete Folder")
                 .setMessage("Are you sure you want to delete the folder: " + folderName + "?")
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    foldersRef.child(folderName).removeValue()
-                            .addOnSuccessListener(aVoid -> {
-                                folderNames.remove(position);
-                                adapter.notifyDataSetChanged();
-                                Toast.makeText(getActivity(), folderName + " deleted", Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to delete folder", Toast.LENGTH_SHORT).show());
+                    folderNames.remove(position);
+                    saveFoldersToPreferences();
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(getActivity(), folderName + " deleted", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("No", (dialog, which) -> dialog.cancel())
                 .show();
