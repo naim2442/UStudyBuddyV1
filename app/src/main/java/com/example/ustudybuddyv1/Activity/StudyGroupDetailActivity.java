@@ -200,7 +200,17 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
         fileRef.putFile(fileUri)
                 .addOnSuccessListener(taskSnapshot -> {
                     // File uploaded successfully
-                    Toast.makeText(this, "File uploaded successfully", Toast.LENGTH_SHORT).show();
+                    taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                        // Get the file's download URL
+                        String fileUrl = uri.toString();
+                        Toast.makeText(this, "File uploaded successfully", Toast.LENGTH_SHORT).show();
+
+                        // Save file details in Firebase Database
+                        saveFileDetailsToDatabase(fileUrl);
+
+                        // Send a message indicating the file is uploaded
+                        sendFileMessage(fileUrl);
+                    });
                 })
                 .addOnFailureListener(exception -> {
                     // File upload failed
@@ -211,14 +221,15 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
 
 
 
+
     private void saveFileDetailsToDatabase(String fileUrl) {
         String fileName = "Uploaded File";  // Customize this based on the file name, for example, use fileUri.getLastPathSegment()
 
-        // Create a File object to store metadata (optional)
+        // Create a FileDetails object to store metadata
         FileDetails fileDetails = new FileDetails(fileName, fileUrl, System.currentTimeMillis());
 
-        // Use the correct group ID to store the file information
-        DatabaseReference filesRef = studyGroupsRef.child("study_group_id_placeholder").child("files");  // Make sure to use the correct group ID
+        // Store the file details in the correct study group
+        DatabaseReference filesRef = studyGroupsRef.child("study_groups").child("files");
         filesRef.push().setValue(fileDetails).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 // Optionally, send a message with the uploaded file URL
@@ -230,12 +241,14 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
     }
 
 
-    // Send file message
+
+// Send file message
     private void sendFileMessage(String fileUrl) {
         String messageText = "Sent a file";  // Customize this message as needed
         Message fileMessage = new Message(currentUserId, messageText, System.currentTimeMillis(), fileUrl);
         chatRef.push().setValue(fileMessage);  // Send the file message
     }
+
 
     // Display the group details
     private void displayGroupDetails(StudyGroup group) {

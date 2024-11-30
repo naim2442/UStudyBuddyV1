@@ -12,7 +12,7 @@ public class FileDetails {
     public FileDetails(String fileName, String fileUrl, long timestamp) {
         this.fileName = fileName;
         this.fileUrl = fileUrl;
-        this.timestamp = timestamp;
+
     }
 
     // Getters and setters
