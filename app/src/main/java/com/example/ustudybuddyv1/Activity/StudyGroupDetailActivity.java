@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ustudybuddyv1.Adapter.ChatAdapter;
+import com.example.ustudybuddyv1.Model.FileDetails;
 import com.example.ustudybuddyv1.Model.Message;
 import com.example.ustudybuddyv1.Model.StudyGroup;
 import com.example.ustudybuddyv1.R;
@@ -34,6 +35,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class StudyGroupDetailActivity extends AppCompatActivity {
 
@@ -192,31 +194,45 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
 
     // Upload to Firebase
     private void uploadFileToFirebase(Uri fileUri) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference().child("group_files").child(System.currentTimeMillis() + "_file");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference fileRef = storageRef.child("uploads/" + UUID.randomUUID().toString());
 
-        storageRef.putFile(fileUri)
-                .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String fileUrl = uri.toString();
-
-                    // Save file details in Firebase Database
-                    saveFileDetailsToDatabase(fileUrl);
-                }))
-                .addOnFailureListener(e -> Toast.makeText(StudyGroupDetailActivity.this, "File upload failed", Toast.LENGTH_SHORT).show());
+        fileRef.putFile(fileUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // File uploaded successfully
+                    Toast.makeText(this, "File uploaded successfully", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(exception -> {
+                    // File upload failed
+                    Toast.makeText(this, "File upload failed: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
+
+
 
 
     private void saveFileDetailsToDatabase(String fileUrl) {
-        String fileName = "Uploaded File";  // You can customize this based on the file
-        File file = new File(fileName, fileUrl);  // Create a File object
+        String fileName = "Uploaded File";  // Customize this based on the file name, for example, use fileUri.getLastPathSegment()
 
-        DatabaseReference filesRef = studyGroupsRef.child("GROUP_ID").child("files");  // Reference to the "files" node
-        filesRef.push().setValue(file);  // Store the file details in the database
+        // Create a File object to store metadata (optional)
+        FileDetails fileDetails = new FileDetails(fileName, fileUrl, System.currentTimeMillis());
+
+        // Use the correct group ID to store the file information
+        DatabaseReference filesRef = studyGroupsRef.child("study_group_id_placeholder").child("files");  // Make sure to use the correct group ID
+        filesRef.push().setValue(fileDetails).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Optionally, send a message with the uploaded file URL
+                sendFileMessage(fileUrl);
+            } else {
+                Toast.makeText(StudyGroupDetailActivity.this, "Error saving file details to database.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     // Send file message
     private void sendFileMessage(String fileUrl) {
-        String messageText = "Sent a file";  // You can use a custom message or leave it as is
+        String messageText = "Sent a file";  // Customize this message as needed
         Message fileMessage = new Message(currentUserId, messageText, System.currentTimeMillis(), fileUrl);
         chatRef.push().setValue(fileMessage);  // Send the file message
     }

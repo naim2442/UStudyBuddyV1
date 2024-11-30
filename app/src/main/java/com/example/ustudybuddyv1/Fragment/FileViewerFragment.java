@@ -2,11 +2,13 @@ package com.example.ustudybuddyv1.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +22,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.ustudybuddyv1.R;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class FileViewerFragment extends Fragment {
@@ -59,7 +63,7 @@ public class FileViewerFragment extends Fragment {
 
         folderNameTextView = view.findViewById(R.id.folder_name_text_view);
         fileListView = view.findViewById(R.id.file_list_view);
-        Button uploadFileButton = view.findViewById(R.id.upload_file_button); // Add an upload button
+        Button uploadFileButton = view.findViewById(R.id.upload_file_button);
 
         // Display the current folder name
         folderNameTextView.setText(folderName);
@@ -89,13 +93,21 @@ public class FileViewerFragment extends Fragment {
         files.add("File1.txt");
         files.add("File2.txt");
         files.add("File3.txt");
-        return files; // Return the loaded file list
+        return files;
     }
 
     private void uploadNewFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*"); // Set the type of file you want to allow
+        intent.setType("*/*"); // Allow all file types initially
         intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // Filter for image, pdf, docx, and xls files by MIME type
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {
+                "image/jpeg", "image/png", "application/pdf", "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        });
+
         startActivityForResult(Intent.createChooser(intent, "Select a file"), PICK_FILE_REQUEST);
     }
 
@@ -105,31 +117,37 @@ public class FileViewerFragment extends Fragment {
         if (requestCode == PICK_FILE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             Uri fileUri = data.getData();
             if (fileUri != null) {
-                uploadFileToFirebase(fileUri);
+                // Save the file locally
+                saveFileLocally(fileUri);
             }
         }
     }
 
-    private void uploadFileToFirebase(Uri fileUri) {
-        // Get a reference to Firebase Storage
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
+    private void saveFileLocally(Uri fileUri) {
+        // Get the content resolver and the file name
+        ContentResolver resolver = getActivity().getContentResolver();
+        String fileName = getFileName(fileUri);
 
-        // Create a reference for the file you want to upload
-        String fileName = System.currentTimeMillis() + "_" + getFileName(fileUri);
-        StorageReference fileRef = storageRef.child(folderName + "/" + fileName);
+        try (InputStream inputStream = resolver.openInputStream(fileUri);
+             FileOutputStream outputStream = getActivity().openFileOutput(fileName, getActivity().MODE_PRIVATE)) {
 
-        // Upload the file
-        fileRef.putFile(fileUri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    Toast.makeText(getActivity(), "File uploaded successfully", Toast.LENGTH_SHORT).show();
-                    // Optionally, refresh the file list or add the uploaded file to the displayed list
-                    fileNames.add(fileName); // Add the new file to the list
-                    adapter.notifyDataSetChanged(); // Refresh the adapter
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getActivity(), "File upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+            if (inputStream != null) {
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, length);
+                }
+            }
+
+            // Notify the user and update the file list
+            Toast.makeText(getActivity(), "File saved locally", Toast.LENGTH_SHORT).show();
+            fileNames.add(fileName); // Add the new file to the list
+            adapter.notifyDataSetChanged(); // Refresh the adapter
+
+        } catch (IOException e) {
+            Toast.makeText(getActivity(), "Error saving file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("FileViewer", "Error saving file", e);
+        }
     }
 
     // Helper method to get the file name from Uri
