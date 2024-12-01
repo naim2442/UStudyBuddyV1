@@ -19,7 +19,6 @@
         android:layout_marginBottom="16dp"/>
 
 
-
     <!-- Image Display (if available) -->
     <ImageView
         android:id="@+id/group_image_display_confirm"
@@ -58,7 +57,16 @@
         android:textSize="16sp"
         android:layout_marginBottom="10dp" />
 
+
     <!-- Tags Display -->
+    <TextView
+        android:id="@+id/date_time_display_confirm"
+        android:layout_width="378dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Date and Time"
+        android:textSize="16sp" />
+
     <TextView
         android:id="@+id/tags_display_confirm"
         android:layout_width="match_parent"
@@ -87,6 +95,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="CONFIRM"
+            android:background="@drawable/rounded_button"
             android:backgroundTint="@android:color/holo_green_dark"/>
     </LinearLayout>
 </LinearLayout>

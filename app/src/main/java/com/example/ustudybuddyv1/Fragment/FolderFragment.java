@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.ustudybuddyv1.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,7 @@ public class FolderFragment extends Fragment {
 
     private static final String PREFS_NAME = "FolderPrefs";
     private static final String FOLDER_KEY = "folders";  // SharedPreferences key
+    private static final String USER_KEY = "user_"; // Prefix for user-specific folder data
 
     private ListView fileList;
     private Button createFolderButton;
@@ -32,11 +35,24 @@ public class FolderFragment extends Fragment {
     private ArrayAdapter<String> adapter;
 
     private SharedPreferences sharedPreferences;
+    private String currentUser;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_folder, container, false);
+
+        // Initialize Firebase Authentication
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if (user != null) {
+            currentUser = user.getUid();  // Get the UID of the current logged-in user
+        } else {
+            // Handle the case when no user is logged in
+            Toast.makeText(getActivity(), "No user is logged in", Toast.LENGTH_SHORT).show();
+            return view;
+        }
 
         // Initialize SharedPreferences
         sharedPreferences = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -83,8 +99,9 @@ public class FolderFragment extends Fragment {
         // Clear the existing list before loading new data
         folderNames.clear();
 
-        // Load the stored folder names from SharedPreferences
-        String foldersString = sharedPreferences.getString(FOLDER_KEY, "");
+        // Load the stored folder names from SharedPreferences, using the current user's unique key
+        String userFolderKey = USER_KEY + currentUser;  // Unique key per user
+        String foldersString = sharedPreferences.getString(userFolderKey, "");
         if (!foldersString.isEmpty()) {
             String[] folders = foldersString.split(",");
             for (String folder : folders) {
@@ -147,7 +164,9 @@ public class FolderFragment extends Fragment {
             foldersString.deleteCharAt(foldersString.length() - 1);
         }
 
-        sharedPreferences.edit().putString(FOLDER_KEY, foldersString.toString()).apply();
+        // Save to SharedPreferences using the unique user key
+        String userFolderKey = USER_KEY + currentUser;  // Unique key per user
+        sharedPreferences.edit().putString(userFolderKey, foldersString.toString()).apply();
     }
 
     private void showDeleteConfirmation(String folderName, int position) {

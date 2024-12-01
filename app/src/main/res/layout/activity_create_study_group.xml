@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
     <LinearLayout
@@ -11,21 +10,31 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Title: Create Study Group -->
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create Study Group"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:gravity="center" />
 
-        <!-- Group Name Input -->
+        <!-- Group Name Label and Input -->
+        <TextView
+            android:id="@+id/group_name_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Group Name"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:gravity="start" />
         <com.google.android.material.textfield.TextInputLayout
             style="@style/RoundedTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Group Name">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/group_name_input"
                 android:layout_width="match_parent"
@@ -33,14 +42,21 @@
                 android:padding="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Subject Input -->
+        <!-- Subject Label and Input -->
+        <TextView
+            android:id="@+id/group_subject_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subject"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start" />
         <com.google.android.material.textfield.TextInputLayout
             style="@style/RoundedTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Subject"
-            android:layout_marginTop="8dp">
-
+            android:hint="Subject">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/group_subject_input"
                 android:layout_width="match_parent"
@@ -48,14 +64,21 @@
                 android:padding="12dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Description Input -->
+        <!-- Description Label and Input -->
+        <TextView
+            android:id="@+id/group_description_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start" />
         <com.google.android.material.textfield.TextInputLayout
             style="@style/RoundedTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"
-            android:layout_marginTop="8dp">
-
+            android:hint="Description">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/group_description_input"
                 android:layout_width="match_parent"
@@ -66,14 +89,70 @@
                 android:lines="3" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Location Display -->
+        <!-- Date and Time Label and Inputs -->
+        <TextView
+            android:id="@+id/group_date_time_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date and Time"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start" />
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/RoundedTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Select Date">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_date_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:inputType="none"
+                android:clickable="true"
+                android:background="@android:color/transparent"
+                android:onClick="showDatePicker" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/RoundedTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Select Time">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_time_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:inputType="none"
+                android:clickable="true"
+                android:background="@android:color/transparent"
+                android:onClick="showTimePicker" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Location Label and Display -->
+        <TextView
+            android:id="@+id/group_location_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Place / Venue"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start" />
         <com.google.android.material.textfield.TextInputLayout
             style="@style/RoundedTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Selected Location">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/location_display"
                 android:layout_width="match_parent"
@@ -85,7 +164,6 @@
                 android:background="@android:color/transparent" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <!-- Map Fragment for selecting location -->
         <fragment
             android:id="@+id/map"
@@ -94,36 +172,47 @@
             android:layout_height="216dp"
             android:layout_marginTop="16dp" />
 
-
-
-        <!-- Tags Selection (Checkboxes) -->
-        <LinearLayout
+        <!-- Tags Label and Section -->
+        <TextView
+            android:id="@+id/tags_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:text="Tags"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start" />
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/tags_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:chipSpacing="8dp" />
 
-            <!-- Predefined tags -->
-            <CheckBox
-                android:id="@+id/tag_itt626"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ITT626" />
-
-            <CheckBox
-                android:id="@+id/tag_backend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Backend" />
-
-            <CheckBox
-                android:id="@+id/tag_semester5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Semester 5" />
-        </LinearLayout>
+        <!-- Add Tag Button (FloatingActionButton) -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_tag_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_input_add"
+            android:layout_gravity="center"
+            android:tint="@android:color/white"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
 
         <!-- Upload Group Image Button -->
+        <TextView
+            android:id="@+id/upload_image_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Picture"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start" />
         <Button
             android:id="@+id/upload_image_button"
             android:layout_width="match_parent"

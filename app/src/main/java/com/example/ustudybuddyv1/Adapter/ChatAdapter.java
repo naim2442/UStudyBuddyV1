@@ -1,5 +1,6 @@
 package com.example.ustudybuddyv1.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ustudybuddyv1.Activity.StudentDetailsActivity;
 import com.example.ustudybuddyv1.Model.Message;
 import com.example.ustudybuddyv1.R;
 import com.google.firebase.database.DataSnapshot;
@@ -56,7 +58,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         holder.messageTextView.setText(message.getMessageText());
         holder.timestampTextView.setText(formatTimestamp(message.getTimestamp()));
 
-        // Fetch the username from Firebase using the senderId
+        // Fetch the username and user details from Firebase using the senderId
         DatabaseReference userRef = FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(message.getSenderId());
@@ -65,19 +67,44 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    // Fetch user details
                     String username = snapshot.child("name").getValue(String.class);
-                    holder.usernameTextView.setText(username); // Set the username
+                    String email = snapshot.child("email").getValue(String.class);
+                    String location = snapshot.child("locationPreference").getValue(String.class);
+                    String university = snapshot.child("university").getValue(String.class);
+                    String course = snapshot.child("course").getValue(String.class);
+
+                    // Set username
+                    holder.usernameTextView.setText(username != null ? username : "Unknown User");
+
+                    // Add click listener to usernameTextView
+                    holder.usernameTextView.setOnClickListener(v -> {
+                        // Navigate to StudentDetailsActivity
+                        Intent intent = new Intent(holder.itemView.getContext(), StudentDetailsActivity.class);
+
+                        // Pass all user details
+                        intent.putExtra("USER_ID", message.getSenderId());
+                        intent.putExtra("USER_NAME", username);
+                        intent.putExtra("USER_EMAIL", email);
+                        intent.putExtra("USER_LOCATION", location);
+                        intent.putExtra("USER_UNIVERSITY", university);
+                        intent.putExtra("USER_COURSE", course);
+
+                        holder.itemView.getContext().startActivity(intent);
+                    });
                 } else {
-                    holder.usernameTextView.setText("Unknown User"); // Fallback for missing users
+                    holder.usernameTextView.setText("Unknown User");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                holder.usernameTextView.setText("Error"); // Fallback for errors
+                holder.usernameTextView.setText("Error Loading User");
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {

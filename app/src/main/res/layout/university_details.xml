@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
+
+    <!-- Background Image (Top Portion Only) -->
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="398dp"
+        android:layout_height="79dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/wireframe_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- App Logo -->
     <ImageView
@@ -11,7 +23,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/logo"
+        android:src="@drawable/app_logo_alt"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -29,6 +41,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="8dp" />
 
+    <!-- University Label -->
+    <TextView
+        android:id="@+id/university_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="University:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp" />
+
     <!-- University Spinner -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/university_input"
@@ -36,16 +61,30 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/university_label"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/spinner_rounded"
         app:layout_constraintEnd_toEndOf="parent">
 
         <Spinner
             android:id="@+id/university_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:prompt="@string/select_your_university" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Course Label -->
+    <TextView
+        android:id="@+id/course_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Course:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/university_input"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp" />
 
     <!-- Course Spinner -->
     <com.google.android.material.textfield.TextInputLayout
@@ -54,16 +93,30 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/university_input"
+        app:layout_constraintTop_toBottomOf="@id/course_label"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/spinner_rounded"
         app:layout_constraintEnd_toEndOf="parent">
 
         <Spinner
             android:id="@+id/course_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:prompt="@string/select_your_course" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Location Preference Label -->
+    <TextView
+        android:id="@+id/location_preference_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location Preference:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/course_input"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp" />
 
     <!-- Location Preference Spinner -->
     <com.google.android.material.textfield.TextInputLayout
@@ -71,24 +124,25 @@
         style="@style/RoundedTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/course_input"
+        app:layout_constraintTop_toBottomOf="@id/location_preference_label"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/spinner_rounded"
         app:layout_constraintEnd_toEndOf="parent">
 
         <Spinner
             android:id="@+id/location_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:prompt="@string/select_your_location_preference" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Sign Up Button -->
     <Button
         android:id="@+id/signup_button"
-        android:background="@drawable/rounded_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="240dp"
+        android:background="@drawable/rounded_button"
         android:backgroundTint="#4F8EF7"
         android:text="Sign Up"
         android:textColor="#FFFFFF"

@@ -16,14 +16,6 @@
         android:layout_gravity="center"
         android:layout_marginBottom="8dp" />
 
-    <TextView
-        android:id="@+id/location_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Current Location: [Your Location Here]"
-        android:padding="8dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp" />
 
     <!-- Map View in a square container -->
     <FrameLayout

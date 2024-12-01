@@ -9,12 +9,15 @@ public class User {
     private String university;            // University name
     private String course;                // Course name
     private String locationPreference;    // User's location preference
+    private String cgpa;                  // CGPA of the user
+    private String highestEducationLevel; // Highest education level (e.g., Degree in Computer Science)
+    private String semesterYear;          // Current semester year
 
     // Default constructor required for Firestore/Realtime Database
     public User() {
     }
 
-    // Constructor with parameters
+    // Constructor for basic user data (for new user registration, for example)
     public User(String userId, String name, String email, String password, String studentId, String university, String course, String locationPreference) {
         this.userId = userId;
         this.name = name;
@@ -24,6 +27,21 @@ public class User {
         this.university = university;
         this.course = course;
         this.locationPreference = locationPreference;
+    }
+
+    // Constructor for editing user profile (with additional fields like CGPA, education level, and semester year)
+    public User(String userId, String name, String email, String password, String studentId, String university, String course, String locationPreference, String cgpa, String highestEducationLevel, String semesterYear) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.studentId = studentId;
+        this.university = university;
+        this.course = course;
+        this.locationPreference = locationPreference;
+        this.cgpa = cgpa;
+        this.highestEducationLevel = highestEducationLevel;
+        this.semesterYear = semesterYear;
     }
 
     // Getters and Setters
@@ -89,5 +107,29 @@ public class User {
 
     public void setLocationPreference(String locationPreference) {
         this.locationPreference = locationPreference;
+    }
+
+    public String getCgpa() {
+        return cgpa;
+    }
+
+    public void setCgpa(String cgpa) {
+        this.cgpa = cgpa;
+    }
+
+    public String getHighestEducationLevel() {
+        return highestEducationLevel;
+    }
+
+    public void setHighestEducationLevel(String highestEducationLevel) {
+        this.highestEducationLevel = highestEducationLevel;
+    }
+
+    public String getSemesterYear() {
+        return semesterYear;
+    }
+
+    public void setSemesterYear(String semesterYear) {
+        this.semesterYear = semesterYear;
     }
 }

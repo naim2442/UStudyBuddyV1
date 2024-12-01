@@ -2,33 +2,30 @@
 
     <!-- Base application theme -->
     <style name="Theme.UStudyBuddyV1" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color -->
-        <item name="cardViewStyle">@style/CardView</item>
-        <item name="colorPrimary">#4F8EF7</item> <!-- Your new color -->
-        <item name="colorPrimaryVariant">#3B6DC1</item> <!-- A darker shade if needed -->
+        <!-- Primary brand color (baby blue) -->
+        <item name="colorPrimary">#A7C8F2</item> <!-- Baby blue -->
+        <item name="colorPrimaryVariant">#82B3E2</item> <!-- Slightly darker shade of baby blue -->
         <item name="colorOnPrimary">#FFFFFF</item> <!-- Text color on primary -->
 
         <!-- Secondary brand color -->
-        <item name="colorSecondary">#4F8EF7</item>
-        <item name="colorSecondaryVariant">#3B6DC1</item>
+        <item name="colorSecondary">#A7C8F2</item> <!-- Same baby blue for secondary -->
+        <item name="colorSecondaryVariant">#82B3E2</item>
         <item name="colorOnSecondary">#FFFFFF</item>
 
         <!-- Other colors -->
-        <item name="android:statusBarColor">#4F8EF7</item> <!-- Top notification bar -->
-        <item name="android:navigationBarColor">#4F8EF7</item> <!-- Bottom bar -->
-
-
+        <item name="android:statusBarColor">#A7C8F2</item> <!-- Top notification bar -->
+        <item name="android:navigationBarColor">#A7C8F2</item> <!-- Bottom bar -->
     </style>
-
 
     <style name="RoundedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxCornerRadiusTopStart">16dp</item>
         <item name="boxCornerRadiusTopEnd">16dp</item>
         <item name="boxCornerRadiusBottomStart">16dp</item>
         <item name="boxCornerRadiusBottomEnd">16dp</item>
-        <item name="boxStrokeColor">#4F8EF7</item>
+        <item name="boxStrokeColor">#A7C8F2</item> <!-- Baby blue border for input fields -->
         <item name="boxStrokeWidth">2dp</item>
-        <item name="android:textColorHint">#808080</item>
+        <item name="android:textColorHint">#B0BEC5</item> <!-- Lighter grey hint text for better readability -->
+        <item name="android:textColor">#2A3A59</item> <!-- Dark text color for input -->
     </style>
 
 </resources>

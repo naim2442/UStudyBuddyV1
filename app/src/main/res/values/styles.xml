@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Other attributes -->
+
+        <!-- Set the gradient for the status bar -->
+        <item name="android:statusBarColor">@drawable/gradient_status_navigation</item>
+
+        <!-- Set the gradient for the navigation bar -->
+        <item name="android:navigationBarColor">@drawable/gradient_status_navigation</item>
+
+        <!-- Other colors -->
+    </style>
+</resources>

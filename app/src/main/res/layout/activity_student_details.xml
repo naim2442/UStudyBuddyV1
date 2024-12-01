@@ -13,7 +13,7 @@
         android:id="@+id/title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Personal Profile"
+        android:text="User Profile"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginBottom="16dp"
@@ -38,8 +38,6 @@
             android:clickable="true"
             android:focusable="true"
             android:layout_alignParentTop="true" />
-
-
     </RelativeLayout>
 
     <!-- Name Field -->
@@ -177,34 +175,6 @@
             android:gravity="center_vertical" />
     </LinearLayout>
 
-
-    <!-- Location Field -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
-
-        <TextView
-            android:id="@+id/location_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location:"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginEnd="8dp"/>
-
-        <TextView
-            android:id="@+id/location_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:padding="12dp"
-            android:gravity="center_vertical" />
-    </LinearLayout>
-
     <!-- CGPA Field -->
 
     <!-- Semester Year Field -->
@@ -288,32 +258,4 @@
             android:gravity="center_vertical" />
     </LinearLayout>
 
-    <!-- Buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="16dp">
-
-        <Button
-            android:id="@+id/edit_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Edit"
-            android:backgroundTint="#4F8EF7"
-            android:textColor="@color/white"
-            android:layout_marginEnd="8dp" />
-
-        <Button
-            android:id="@+id/logout_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="LOG OUT"
-            android:backgroundTint="@android:color/holo_red_dark"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
 </LinearLayout>

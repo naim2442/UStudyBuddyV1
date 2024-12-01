@@ -1,5 +1,6 @@
 package com.example.ustudybuddyv1.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ustudybuddyv1.Activity.ChangePasswordActivity;
 import com.example.ustudybuddyv1.Activity.LoginActivity;
+import com.example.ustudybuddyv1.Activity.StudentDetailsEditActivity;
 import com.example.ustudybuddyv1.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +36,7 @@ import java.io.IOException;
 public class ProfileFragment extends Fragment {
 
     private TextView fullNameTextView, studentIdTextView, emailTextView, universityTextView, locationPreferenceTextView, courseTextView;
+    private TextView cgpaTextView, semesterYearTextView, highestEducationTextView;
     private Button changePasswordButton, logoutButton;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
@@ -42,6 +45,7 @@ public class ProfileFragment extends Fragment {
     private static final int TAKE_PICTURE_REQUEST = 2;
     private Uri imageUri;
 
+    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,6 +66,10 @@ public class ProfileFragment extends Fragment {
             universityTextView = view.findViewById(R.id.university_text_view);
             locationPreferenceTextView = view.findViewById(R.id.location_text_view);
             courseTextView = view.findViewById(R.id.course_text_view);
+            cgpaTextView = view.findViewById(R.id.cgpa_text_view);
+            semesterYearTextView = view.findViewById(R.id.semester_year_text_view);
+            highestEducationTextView = view.findViewById(R.id.highest_education_level_text_view);
+
 
             // Initialize Buttons
             changePasswordButton = view.findViewById(R.id.edit_button);
@@ -74,7 +82,12 @@ public class ProfileFragment extends Fragment {
             loadUserData();
 
             // Set up buttons
-            changePasswordButton.setOnClickListener(v -> changePassword());
+            changePasswordButton.setOnClickListener(v -> {
+                // Navigate to the StudentDetailsEditActivity
+                Intent intent = new Intent(getActivity(), StudentDetailsEditActivity.class);
+                startActivity(intent);
+            });
+
             logoutButton.setOnClickListener(v -> logoutUser());
 
             // Set onClickListener for Profile Image to open a dialog for image selection
@@ -99,6 +112,9 @@ public class ProfileFragment extends Fragment {
                     String studentId = dataSnapshot.child("studentId").getValue(String.class);
                     String university = dataSnapshot.child("university").getValue(String.class);
                     String course = dataSnapshot.child("course").getValue(String.class);
+                    String cgpa = dataSnapshot.child("cgpa").getValue(String.class);  // Fetch CGPA
+                    String semesterYear = dataSnapshot.child("semesterYear").getValue(String.class);  // Fetch Semester Year
+                    String highestEducation = dataSnapshot.child("highestEducationLevel").getValue(String.class);  // Fetch Highest Education Level
 
                     // Set data to TextViews
                     fullNameTextView.setText(fullName);
@@ -107,6 +123,10 @@ public class ProfileFragment extends Fragment {
                     locationPreferenceTextView.setText(location);
                     universityTextView.setText(university);
                     courseTextView.setText(course);
+
+                    cgpaTextView.setText(cgpa);
+                    semesterYearTextView.setText(semesterYear);
+                    highestEducationTextView.setText(highestEducation);
                 } else {
                     Toast.makeText(getActivity(), "User profile not found", Toast.LENGTH_SHORT).show();
                 }

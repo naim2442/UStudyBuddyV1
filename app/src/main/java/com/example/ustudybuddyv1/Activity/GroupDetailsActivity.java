@@ -64,6 +64,20 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         binding.textGroupName.setText(studyGroup.getGroupName());
         binding.textGroupSubject.setText(studyGroup.getSubject());
         binding.textGroupDescription.setText(studyGroup.getDescription());
+        binding.textGroupDatetime.setText(studyGroup.getDateTime());
+
+        // Set tags
+        if (studyGroup.getTags() != null && !studyGroup.getTags().isEmpty()) {
+            StringBuilder tagsText = new StringBuilder("Tags: ");
+            for (String tag : studyGroup.getTags()) {
+                tagsText.append(tag).append(", ");
+            }
+            // Remove the last comma
+            tagsText.setLength(tagsText.length() - 2);
+            binding.textGroupTags.setText(tagsText.toString());
+        } else {
+            binding.textGroupTags.setText("No tags available");
+        }
 
         // Fetch creator's name and course from User model using Firebase
         String creatorId = studyGroup.getCreatorId();
@@ -91,6 +105,11 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                 ? studyGroup.getDecodedLocationName()
                 : studyGroup.getLocation();
         binding.textGroupLocation.setText(locationName);
+
+        // Set the date and time
+        if (studyGroup.getDateTime() != null) {
+            binding.textGroupDatetime.setText(studyGroup.getDateTime());  // Assuming you have a TextView with id textGroupDateTime
+        }
 
         // Check if the user is the creator or already a member
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();

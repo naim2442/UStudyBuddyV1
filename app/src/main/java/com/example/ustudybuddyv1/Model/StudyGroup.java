@@ -14,7 +14,7 @@ public class StudyGroup implements Serializable {
     private int membersCount;
     private boolean isPublic;
     private String subject;
-    private String dateTime;
+    private String dateTime; // Store both date and time as a String (e.g., "2024-12-01 15:00")
     private String description;
     private List<String> tags;
     private String imageUrl; // URL for uploaded image
