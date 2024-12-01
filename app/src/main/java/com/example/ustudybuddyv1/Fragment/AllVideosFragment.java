@@ -16,11 +16,15 @@ import com.example.ustudybuddyv1.Model.Video;
 import com.example.ustudybuddyv1.R;
 import com.example.ustudybuddyv1.Utils.YoutubeManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AllVideosFragment extends Fragment {
 
     private RecyclerView recyclerViewAllVideos;
+
+    ArrayList<Video> arrayListVideos;
+
 
     @Nullable
     @Override
@@ -33,7 +37,8 @@ public class AllVideosFragment extends Fragment {
 
         // Fetch videos using YoutubeManager
         YoutubeManager youtubeManager = new YoutubeManager();
-        youtubeManager.searchVideos("Educational Programming Tutorials", new YoutubeManager.VideoSearchCallback() {
+        String playlistId = "RDQMGvnpkZz7INY";  // Replace with your playlist ID
+        youtubeManager.fetchVideosFromPlaylist(playlistId, new YoutubeManager.VideoSearchCallback() {
             @Override
             public void onVideosFetched(List<Video> videos) {
                 if (videos != null && !videos.isEmpty()) {
@@ -43,6 +48,7 @@ public class AllVideosFragment extends Fragment {
                 }
             }
         });
+
 
         return view;
     }

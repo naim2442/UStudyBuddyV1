@@ -165,7 +165,11 @@ public class HomeFragment extends Fragment {
     }
     private void fetchRecommendedVideos() {
         YoutubeManager youTubeManager = new YoutubeManager();
-        youTubeManager.searchVideos("Educational videos", new YoutubeManager.VideoSearchCallback() {
+
+        // Replace with your desired playlist ID
+        String playlistId = "RDQMGvnpkZz7INY";  // Example Playlist ID
+
+        youTubeManager.fetchVideosFromPlaylist(playlistId, new YoutubeManager.VideoSearchCallback() {
             @Override
             public void onVideosFetched(List<Video> videos) {
                 if (videos != null && !videos.isEmpty()) {
@@ -177,7 +181,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     // Safely check if the fragment's context is available
                     if (getContext() != null) {
-                        Toast.makeText(getContext(), "No educational videos found!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "No videos found in the playlist!", Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e("HomeFragment", "Context is null, cannot show Toast");
                     }
@@ -185,6 +189,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 
 
 
