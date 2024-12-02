@@ -13,6 +13,8 @@ public class User {
     private String highestEducationLevel; // Highest education level (e.g., Degree in Computer Science)
     private String semesterYear;          // Current semester year
 
+    private String role;                  // User's role (e.g., Student, Admin)
+
     // Default constructor required for Firestore/Realtime Database
     public User() {
     }
@@ -43,6 +45,19 @@ public class User {
         this.highestEducationLevel = highestEducationLevel;
         this.semesterYear = semesterYear;
     }
+
+
+    // Constructor for admin
+    public User(String userId, String name, String email, String password, String role) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+
+
 
     // Getters and Setters
     public String getUserId() {
@@ -131,5 +146,13 @@ public class User {
 
     public void setSemesterYear(String semesterYear) {
         this.semesterYear = semesterYear;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

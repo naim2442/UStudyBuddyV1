@@ -6,18 +6,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ustudybuddyv1.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private TextInputEditText editTextEmail, editTextPassword;
-
-    private Button registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +37,13 @@ public class LoginActivity extends AppCompatActivity {
         Button buttonLogin = findViewById(R.id.login_button);
         Button registerButton = findViewById(R.id.register_button);
 
-        TextView textViewForgotPassword = findViewById(R.id.forgot_password);
-
         // Set up login button click listener
         buttonLogin.setOnClickListener(view -> loginUser());
 
-        // Set up sign-up text click listener
+        // Set up register button click listener
         registerButton.setOnClickListener(view -> {
-            // Redirect to Sign Up Activity
             startActivity(new Intent(LoginActivity.this, SignupActivity.class));
         });
-
-//        // Set up forgot password text click listener
-//        textViewForgotPassword.setOnClickListener(view -> {
-//            // Redirect to Forgot Password Activity (optional - create this if needed)
-//            startActivity(new Intent(LoginActivity.this, ChangePasswordActivity.class));
-//        });
     }
 
     private void loginUser() {
@@ -65,15 +60,43 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, navigate to Main Activity
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish(); // Close the login activity
+                        checkUserRole();
                     } else {
-                        // If sign in fails, display a message to the user
                         String errorMessage = task.getException() != null ? task.getException().getMessage() : "Unknown error";
                         Toast.makeText(LoginActivity.this, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+    private void checkUserRole() {
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String role = snapshot.child("role").getValue(String.class);
+                    if ("admin".equalsIgnoreCase(role != null ? role.trim() : "")) {
+                        Toast.makeText(LoginActivity.this, "Welcome Admin", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Welcome User", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "User role not found in database", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(LoginActivity.this, "Error fetching user role: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
