@@ -43,7 +43,7 @@
         <activity android:name=".Activity.ViewFilesActivity"/>
         <activity android:name=".Activity.StudentDetailsActivity"/>
         <activity android:name=".Activity.StudentDetailsEditActivity"/>
-
+        <activity android:name=".Activity.LocationDetailsActivity"/>
 
         <activity android:name=".Activity.GroupDetailsActivity">
             <!-- If you want to customize it, you can add intent filters or other properties -->

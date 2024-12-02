@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.ustudybuddyv1.Model.StudyGroup;
 import com.example.ustudybuddyv1.Model.User;  // Assuming User model exists
 import com.example.ustudybuddyv1.R;
-import com.example.ustudybuddyv1.databinding.ActivityGroupDetailsBinding;
+import com.example.ustudybuddyv1.databinding.ActivityLocationDetailsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,9 +28,9 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.util.Objects;
 
-public class GroupDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class LocationDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private ActivityGroupDetailsBinding binding;
+    private ActivityLocationDetailsBinding binding;
     private GoogleMap map;
     private StudyGroup studyGroup;
 
@@ -39,7 +39,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         super.onCreate(savedInstanceState);
 
         // Inflate layout using ViewBinding
-        binding = ActivityGroupDetailsBinding.inflate(getLayoutInflater());
+        binding = ActivityLocationDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
 
@@ -99,7 +99,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("GroupDetailsActivity", "Failed to fetch creator's details.", databaseError.toException());
+                Log.e("LocationDetailsActivity", "Failed to fetch creator's details.", databaseError.toException());
             }
         });
 
