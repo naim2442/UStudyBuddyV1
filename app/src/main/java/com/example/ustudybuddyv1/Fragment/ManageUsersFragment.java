@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,19 +29,23 @@ public class ManageUsersFragment extends Fragment {
     private RecyclerView rvUsers;
     private UserAdapter userAdapter;
     private List<User> userList;
+    private TextView tvTotalUsers;  // Declare TextView for total users
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_users, container, false);
 
+        // Initialize Views
         rvUsers = view.findViewById(R.id.rvUsers);
+        tvTotalUsers = view.findViewById(R.id.tvTotalUsers);  // Initialize total users TextView
+
         rvUsers.setLayoutManager(new LinearLayoutManager(requireContext()));
         userList = new ArrayList<>();
         userAdapter = new UserAdapter(userList);
         rvUsers.setAdapter(userAdapter);
 
-        fetchUsers();
+        fetchUsers(); // Fetch user data from Firebase
 
         return view;
     }
@@ -59,6 +64,11 @@ public class ManageUsersFragment extends Fragment {
                         userList.add(user);
                     }
                 }
+
+                // Update the total users count in the TextView
+                tvTotalUsers.setText("Total Users: " + userList.size());
+
+                // Notify the adapter to update the RecyclerView
                 userAdapter.notifyDataSetChanged();
             }
 

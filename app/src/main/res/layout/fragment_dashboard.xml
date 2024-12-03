@@ -1,23 +1,99 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/tvTotalUsers"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Total Users: "
-        android:textSize="18sp"
-        android:padding="8dp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvTotalGroups"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total Groups: "
-        android:textSize="18sp"
-        android:padding="8dp" />
-</LinearLayout>
+        <!-- Total Users and Groups -->
+        <TextView
+            android:id="@+id/tvTotalUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Users: "
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvTotalGroups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Groups: "
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:visibility="gone"/>
+
+        <!-- Section: Create Announcements -->
+        <TextView
+            android:id="@+id/tvCreateAnnouncementsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Announcements"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="#D3D3D3"
+            android:gravity="center" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCreateAnnouncements"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:background="#F0F0F0" />
+
+        <!-- Section: Motivational Corner -->
+
+        <TextView
+            android:id="@+id/tvMotivationalCornerTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D3D3D3"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Motivational Corner"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerMotivationalCorner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:background="#F0F0F0" />
+
+        <!-- Section: View Groups -->
+        <TextView
+            android:id="@+id/tvViewGroupsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Groups"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textStyle="bold"
+            android:background="#D3D3D3"
+            android:gravity="center" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewGroups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:background="#F0F0F0" />
+
+    </LinearLayout>
+</ScrollView>

@@ -15,9 +15,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ustudybuddyv1.Adapter.AnnouncementsAdapter;
 import com.example.ustudybuddyv1.Adapter.LatestGroupsAdapter;
+import com.example.ustudybuddyv1.Adapter.MotivationalQuotesAdapter;
 import com.example.ustudybuddyv1.Adapter.RecommendedVideosAdapter;
 import com.example.ustudybuddyv1.Adapter.StudyGroupAdapter;
+import com.example.ustudybuddyv1.Model.Announcement;
+import com.example.ustudybuddyv1.Model.MotivationalQuote;
 import com.example.ustudybuddyv1.Model.Video;
 import com.example.ustudybuddyv1.R;
 import com.example.ustudybuddyv1.Model.StudyGroup;
@@ -30,11 +34,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private RecyclerView recyclerViewLatestGroups, recyclerViewRecommendedVideos;
+    private RecyclerView recyclerViewLatestGroups, recyclerViewRecommendedVideos, recyclerViewMotivationalQuotes;
+    private RecyclerView recyclerViewAnnouncements;
+    private AnnouncementsAdapter announcementsAdapter;
+    private List<Announcement> announcements = new ArrayList<>();
     private TextView welcomeMessage;
 
     private List<Video> recommendedVideos = new ArrayList<>();
@@ -53,8 +61,36 @@ public class HomeFragment extends Fragment {
         welcomeMessage = view.findViewById(R.id.welcome_message);
         recyclerViewLatestGroups = view.findViewById(R.id.recycler_view_latest_groups);
         recyclerViewRecommendedVideos = view.findViewById(R.id.recycler_view_recommended);
+        recyclerViewMotivationalQuotes = view.findViewById(R.id.recycler_view_motivational_quotes);
+        TextView announcementsTitle = view.findViewById(R.id.announcements_title);
+        announcementsTitle.setOnClickListener(v -> {
+            AnnouncementsFragment announcementsFragment = new AnnouncementsFragment();
+
+            // Navigate to AnnouncementsFragment
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, announcementsFragment)
+                    .addToBackStack(null) // Optional: Adds to the back stack
+                    .commit();
+        });
+
+
+        recyclerViewAnnouncements = view.findViewById(R.id.recycler_view_announcements);
+        recyclerViewAnnouncements.setLayoutManager(new LinearLayoutManager(getActivity()));
+        fetchAnnouncements();
+
+
+        recyclerViewMotivationalQuotes = view.findViewById(R.id.recycler_view_motivational_quotes);
+        recyclerViewMotivationalQuotes.setLayoutManager(new LinearLayoutManager(getActivity()));
+        fetchMotivationalQuotes();
+
+
+
+
 
         // Set up layout manager for RecyclerView
+        recyclerViewMotivationalQuotes.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewAnnouncements.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewLatestGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewRecommendedVideos.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -189,6 +225,73 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    private void fetchMotivationalQuotes() {
+        DatabaseReference quotesRef = FirebaseDatabase.getInstance().getReference("motivational_quotes");
+
+        // Order by timestamp (or any field you use to track creation date)
+        quotesRef.orderByChild("timestamp").limitToLast(10).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<MotivationalQuote> quotes = new ArrayList<>();
+                for (DataSnapshot quoteSnapshot : snapshot.getChildren()) {
+                    MotivationalQuote quote = quoteSnapshot.getValue(MotivationalQuote.class);
+                    if (quote != null) {
+                        quotes.add(quote);
+                    }
+                }
+
+                // Reverse the list to show the latest quotes first (most recent on the left)
+                Collections.reverse(quotes);
+
+                // Set up the adapter for motivational quotes
+                MotivationalQuotesAdapter adapter = new MotivationalQuotesAdapter(quotes);
+                recyclerViewMotivationalQuotes.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Failed to load motivational quotes", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+    private void fetchAnnouncements() {
+        DatabaseReference announcementsRef = FirebaseDatabase.getInstance().getReference("announcements");
+
+        // Order by date, assuming "date" is a field in your Firebase model
+        announcementsRef.orderByChild("date").limitToLast(3).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                announcements.clear();
+                for (DataSnapshot announcementSnapshot : snapshot.getChildren()) {
+                    Announcement announcement = announcementSnapshot.getValue(Announcement.class);
+                    if (announcement != null) {
+                        announcements.add(announcement);
+                    }
+                }
+
+                // Reverse the list to show latest first
+                Collections.reverse(announcements);
+
+                // Update the adapter
+                if (announcementsAdapter == null) {
+                    announcementsAdapter = new AnnouncementsAdapter(announcements);
+                    recyclerViewAnnouncements.setAdapter(announcementsAdapter);
+                } else {
+                    announcementsAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Failed to load announcements", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 
 

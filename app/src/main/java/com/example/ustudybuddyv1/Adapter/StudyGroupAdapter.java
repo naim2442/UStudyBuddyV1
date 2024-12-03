@@ -69,7 +69,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.Vi
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView groupName, membersCount, buttonJoinGroup;
+        TextView groupName, membersCount, buttonJoinGroup ;
 
         ViewHolder(View itemView) {
             super(itemView);

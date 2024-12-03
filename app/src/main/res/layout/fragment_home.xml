@@ -1,8 +1,9 @@
-<ScrollView android:layout_width="match_parent"
+<ScrollView
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -18,20 +19,20 @@
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Recommended Videos Section -->
+        <!-- Announcements -->
         <TextView
-            android:id="@+id/recommended_videos_title"
+            android:id="@+id/announcements_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Recommended Videos"
+            android:text="Announcements"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:layout_marginBottom="8dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_recommended"
+            android:id="@+id/recycler_view_announcements"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
@@ -39,6 +40,49 @@
             android:padding="8dp"
             android:clipToPadding="false"
             android:layout_marginBottom="16dp"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="16dp"/>
+
+
+
+        <!-- Personalized Dashboard -->
+        <TextView
+            android:id="@+id/personalized_dashboard_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Personalized Dashboard"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/white"
+            android:padding="8dp">
+
+            <!-- Dashboard Item Example -->
+            <TextView
+                android:id="@+id/study_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Study Hours: 5"
+                android:layout_marginEnd="16dp"/>
+            <TextView
+                android:id="@+id/upcoming_deadlines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Deadlines: 3"/>
+        </LinearLayout>
+
+
 
         <View
             android:layout_width="match_parent"
@@ -68,24 +112,78 @@
             android:clipToPadding="false"
             android:layout_marginBottom="16dp"/>
 
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Continue Your Studies Section -->
+
+
+        <!-- Recommended Videos Section -->
         <TextView
-            android:id="@+id/continue_studies_title"
+            android:id="@+id/recommended_videos_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Continue Your Studies"
+            android:text="Recommended Videos"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_recommended"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:background="@android:color/white"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:layout_marginBottom="16dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Motivational Corner -->
+        <TextView
+            android:id="@+id/motivational_corner_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Motivational Corner"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_continue_studies"
+            android:id="@+id/recycler_view_motivational_quotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- To-Do List -->
+        <TextView
+            android:id="@+id/todo_list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To-Do List"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_todo_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"

@@ -5,26 +5,17 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Total Users Count -->
     <TextView
-        android:id="@+id/tvTotalUsers"
+        android:id="@+id/tvMotivationalTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Users: 0"
-        android:textSize="18sp"
-        android:paddingBottom="8dp" />
-
-    <!-- Manage Users Title -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Manage Users"
+        android:text="Motivational Quotes"
         android:textSize="20sp"
-        android:paddingBottom="8dp" />
+        android:textStyle="bold"
+        android:paddingBottom="16dp"/>
 
-    <!-- RecyclerView for Users -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvUsers"
+        android:id="@+id/rvMotivationalQuotes"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

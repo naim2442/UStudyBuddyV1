@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Title for Motivational Corner Admin -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Motivational Quote"
+        android:textSize="24sp"
+        android:paddingBottom="16dp"
+        android:layout_gravity="center_horizontal" />
+
+    <!-- EditText for Quote -->
+    <EditText
+        android:id="@+id/etQuote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Motivational Quote"
+        android:padding="12dp"
+        android:textSize="18sp"
+        android:inputType="textMultiLine" />
+
+    <!-- EditText for Author -->
+    <EditText
+        android:id="@+id/etAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Author's Name"
+        android:padding="12dp"
+        android:textSize="18sp" />
+
+    <!-- Button to Add Quote -->
+    <Button
+        android:id="@+id/btnAddQuote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Quote"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_button" />
+
+</LinearLayout>
