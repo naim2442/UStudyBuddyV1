@@ -1,0 +1,17 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Define the overall shape (rectangle) -->
+    <solid android:color="#FFFFFF"/> <!-- Background color inside the box (optional) -->
+    <stroke
+        android:color="#000000"
+    android:width="2dp"/>
+
+    <!-- Rounded corners -->
+    <corners android:radius="8dp"/> <!-- Adjust the radius for corner roundness -->
+
+    <!-- Optional padding (space between the border and content) -->
+    <padding
+        android:left="8dp"
+        android:top="8dp"
+        android:right="8dp"
+        android:bottom="8dp"/>
+</shape>

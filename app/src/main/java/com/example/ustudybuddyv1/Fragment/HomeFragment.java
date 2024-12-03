@@ -20,8 +20,10 @@ import com.example.ustudybuddyv1.Adapter.LatestGroupsAdapter;
 import com.example.ustudybuddyv1.Adapter.MotivationalQuotesAdapter;
 import com.example.ustudybuddyv1.Adapter.RecommendedVideosAdapter;
 import com.example.ustudybuddyv1.Adapter.StudyGroupAdapter;
+import com.example.ustudybuddyv1.Adapter.StudyTipAdapter;
 import com.example.ustudybuddyv1.Model.Announcement;
 import com.example.ustudybuddyv1.Model.MotivationalQuote;
+import com.example.ustudybuddyv1.Model.StudyTip;
 import com.example.ustudybuddyv1.Model.Video;
 import com.example.ustudybuddyv1.R;
 import com.example.ustudybuddyv1.Model.StudyGroup;
@@ -52,6 +54,10 @@ public class HomeFragment extends Fragment {
     private List<StudyGroup> yourGroups = new ArrayList<>();
     private List<StudyGroup> upcomingGroups = new ArrayList<>();
 
+    private RecyclerView recyclerViewDailyTips;
+    private List<StudyTip> studyTips = new ArrayList<>(); // List to store study tips
+    private StudyTipAdapter dailyTipsAdapter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,6 +81,24 @@ public class HomeFragment extends Fragment {
         });
 
 
+        TextView latestStudyTipsTitle = view.findViewById(R.id.latest_study_tips_title);
+        latestStudyTipsTitle.setOnClickListener(v -> {
+            DailyTipsFragment dailyTipsFragment = new DailyTipsFragment();
+
+//            // Pass study tips to DailyTipsFragment (if needed)
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelableArrayList("studyTips", new ArrayList<>(studyTips));
+//            dailyTipsFragment.setArguments(bundle);
+
+            // Navigate to DailyTipsFragment
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, dailyTipsFragment)
+                    .addToBackStack(null) // Optional: Adds to the back stack
+                    .commit();
+        });
+
+
         recyclerViewAnnouncements = view.findViewById(R.id.recycler_view_announcements);
         recyclerViewAnnouncements.setLayoutManager(new LinearLayoutManager(getActivity()));
         fetchAnnouncements();
@@ -83,6 +107,13 @@ public class HomeFragment extends Fragment {
         recyclerViewMotivationalQuotes = view.findViewById(R.id.recycler_view_motivational_quotes);
         recyclerViewMotivationalQuotes.setLayoutManager(new LinearLayoutManager(getActivity()));
         fetchMotivationalQuotes();
+
+
+        // Initialize the RecyclerView for daily tips
+        recyclerViewDailyTips = view.findViewById(R.id.recycler_view_daily_tips);
+        recyclerViewDailyTips.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        // Fetch daily tips from Firebase
+        fetchDailyTips();
 
 
 
@@ -288,6 +319,34 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getContext(), "Failed to load announcements", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchDailyTips() {
+        DatabaseReference tipsRef = FirebaseDatabase.getInstance().getReference("study_tips");
+        tipsRef.orderByChild("timestamp").limitToLast(3).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                studyTips.clear();
+                for (DataSnapshot tipSnapshot : snapshot.getChildren()) {
+                    StudyTip studyTip = tipSnapshot.getValue(StudyTip.class);
+                    if (studyTip != null) {
+                        studyTips.add(studyTip);
+                    }
+                }
+
+                // Reverse the list to show the latest tips first
+                Collections.reverse(studyTips);
+
+                // Set up the adapter for the latest study tips
+                dailyTipsAdapter = new StudyTipAdapter(studyTips);
+                recyclerViewDailyTips.setAdapter(dailyTipsAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Failed to load study tips", Toast.LENGTH_SHORT).show();
             }
         });
     }

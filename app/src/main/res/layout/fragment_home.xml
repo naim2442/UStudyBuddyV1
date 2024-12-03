@@ -149,6 +149,35 @@
             android:background="@android:color/darker_gray"
             android:layout_marginBottom="16dp"/>
 
+        <!-- Latest Study Tips Section -->
+        <TextView
+            android:id="@+id/latest_study_tips_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Latest Study Tips"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_daily_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            android:nestedScrollingEnabled="false"
+            android:background="@android:color/white"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="16dp"/>
+
+
         <!-- Motivational Corner -->
         <TextView
             android:id="@+id/motivational_corner_title"

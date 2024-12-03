@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Title Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Study Tip"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingBottom="16dp"/>
+
+    <!-- Study Tip Title Input -->
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Study Tip Title"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:background="@drawable/box_border" />
+
+    <!-- Study Tip Content Input -->
+    <EditText
+        android:id="@+id/etMessage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:hint="Enter Study Tip Content"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:background="@drawable/box_border"
+        android:inputType="textMultiLine"
+        android:gravity="top|start" />
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Tip"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColor="#FFFFFF" />
+</LinearLayout>
