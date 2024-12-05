@@ -128,7 +128,7 @@
             android:id="@+id/recommended_videos_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Recommended Videos"
+            android:text="Recommended Groups"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
@@ -145,6 +145,15 @@
             android:clipToPadding="false"
             android:layout_marginBottom="16dp"/>
 
+        <TextView
+            android:id="@+id/no_recommended_groups_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You have no recommended groups yet."
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:layout_margin="8dp"
+            android:visibility="gone" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

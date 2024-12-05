@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="16dp">
+
+    <!-- Title for recommended study groups -->
+    <TextView
+        android:id="@+id/recommended_study_group_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recommended Study Groups For You"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- User's Current Location -->
+    <TextView
+        android:id="@+id/user_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your current location: [Fetching...]"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <!-- RecyclerView to Display Study Groups -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_all_recommended_groups"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

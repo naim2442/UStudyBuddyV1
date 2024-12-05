@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.ustudybuddyv1.Adapter.AnnouncementsAdapter;
 import com.example.ustudybuddyv1.Adapter.LatestGroupsAdapter;
 import com.example.ustudybuddyv1.Adapter.MotivationalQuotesAdapter;
+import com.example.ustudybuddyv1.Adapter.RecommendedGroupsAdapter;
 import com.example.ustudybuddyv1.Adapter.RecommendedVideosAdapter;
 import com.example.ustudybuddyv1.Adapter.StudyGroupAdapter;
 import com.example.ustudybuddyv1.Adapter.StudyTipAdapter;
@@ -53,6 +54,13 @@ public class HomeFragment extends Fragment {
 
     private List<StudyGroup> yourGroups = new ArrayList<>();
     private List<StudyGroup> upcomingGroups = new ArrayList<>();
+
+    private RecyclerView recyclerViewRecommended;
+    private LatestGroupsAdapter adapter;
+    private List<StudyGroup> allStudyGroups = new ArrayList<>();
+    private List<StudyGroup> recommendedGroups = new ArrayList<>();
+    private String userCourse, userUniversity, currentUserId;
+
 
     private RecyclerView recyclerViewDailyTips;
     private List<StudyTip> studyTips = new ArrayList<>(); // List to store study tips
@@ -139,17 +147,17 @@ public class HomeFragment extends Fragment {
         recyclerViewLatestGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewRecommendedVideos.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-// Initialize the recommended videos title
-        TextView recommendedVideosTitle = view.findViewById(R.id.recommended_videos_title);
+        // Initialize the recommended groups title
+        TextView recommendedGroupsTitle = view.findViewById(R.id.recommended_videos_title);
 
-// Set click listener to navigate to AllRecommendedVideosFragment
-        recommendedVideosTitle.setOnClickListener(v -> {
-            AllVideosFragment allRecommendedVideosFragment = new AllVideosFragment();
+        // Set click listener to navigate to AllRecommendedGroupsFragment
+        recommendedGroupsTitle.setOnClickListener(v -> {
+            AllRecommendedGroupsFragment allRecommendedGroupsFragment = new AllRecommendedGroupsFragment();
 
             // Navigate to the new fragment
             getParentFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, allRecommendedVideosFragment)
+                    .replace(R.id.fragment_container, allRecommendedGroupsFragment)
                     .addToBackStack(null) // Adds to back stack for proper navigation
                     .commit();
         });
@@ -180,8 +188,9 @@ public class HomeFragment extends Fragment {
         // Fetch public groups to display in the latest groups RecyclerView
         fetchPublicGroups();
 
-        // Fetch recommended videos
-        fetchRecommendedVideos();
+        fetchRecommendedGroups();
+
+
 
         return view;
     }
@@ -244,32 +253,100 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-    private void fetchRecommendedVideos() {
-        YoutubeManager youTubeManager = new YoutubeManager();
 
-        // Replace with your desired playlist ID
-        String playlistId = "RDQMGvnpkZz7INY";  // Example Playlist ID
 
-        youTubeManager.fetchVideosFromPlaylist(playlistId, new YoutubeManager.VideoSearchCallback() {
+    private void fetchRecommendedGroups() {
+        // Fetch current user ID
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Reference to the "users" node to get the current user's course and university
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onVideosFetched(List<Video> videos) {
-                if (videos != null && !videos.isEmpty()) {
-                    recommendedVideos = videos;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Fetch user's course and university from the snapshot
+                    String userCourse = snapshot.child("course").getValue(String.class);
+                    String userUniversity = snapshot.child("university").getValue(String.class);
 
-                    // Set up the adapter for recommended videos
-                    RecommendedVideosAdapter adapter = new RecommendedVideosAdapter(recommendedVideos);
-                    recyclerViewRecommendedVideos.setAdapter(adapter);
-                } else {
-                    // Safely check if the fragment's context is available
-                    if (getContext() != null) {
-                        Toast.makeText(getContext(), "No videos found in the playlist!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Log.e("HomeFragment", "Context is null, cannot show Toast");
-                    }
+                    // Now fetch study groups
+                    DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference("study_groups");
+                    groupsRef.orderByChild("public").equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            List<StudyGroup> groups = new ArrayList<>();
+
+                            for (DataSnapshot groupSnapshot : snapshot.getChildren()) {
+                                StudyGroup group = groupSnapshot.getValue(StudyGroup.class);
+                                if (group != null) {
+                                    // Fetch creator details for filtering
+                                    String creatorId = group.getCreatorId();
+                                    fetchCreatorDetails(creatorId, group, userCourse, userUniversity, groups);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // Handle error
+                        }
+                    });
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
             }
         });
     }
+
+    private void fetchCreatorDetails(String creatorId, StudyGroup group, String userCourse, String userUniversity, List<StudyGroup> groups) {
+        // Reference to the "users" node to get the creator's course and university
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference creatorRef = FirebaseDatabase.getInstance().getReference("users").child(creatorId);
+        creatorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Fetch creator's course and university
+                    String creatorCourse = snapshot.child("course").getValue(String.class);
+                    String creatorUniversity = snapshot.child("university").getValue(String.class);
+
+                    // Filter the study groups by matching course or university
+                    if ((creatorCourse != null && creatorCourse.equals(userCourse)) ||
+                            (creatorUniversity != null && creatorUniversity.equals(userUniversity))) {
+                        groups.add(group);
+                    }
+
+                    // After processing all groups, update the RecyclerView
+                    if (groups.size() == snapshot.getChildrenCount()) {
+                        // Limit the groups to only 3 for the home page
+                        List<StudyGroup> limitedGroups = new ArrayList<>();
+                        for (int i = 0; i < Math.min(groups.size(), 3); i++) {
+                            limitedGroups.add(groups.get(i));
+                        }
+
+                        // Set up RecyclerView to scroll horizontally
+                        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                        recyclerViewRecommended.setLayoutManager(horizontalLayoutManager);
+
+                        // Pass the limited groups list and user ID to the adapter
+                        // Assuming you have a list of filtered groups
+                        RecommendedGroupsAdapter adapter = new RecommendedGroupsAdapter(limitedGroups, currentUserId);
+                        recyclerViewRecommended.setAdapter(adapter);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
+    }
+
 
     private void fetchMotivationalQuotes() {
         DatabaseReference quotesRef = FirebaseDatabase.getInstance().getReference("motivational_quotes");

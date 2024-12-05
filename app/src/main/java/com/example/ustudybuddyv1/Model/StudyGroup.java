@@ -14,6 +14,10 @@ public class StudyGroup implements Serializable {
     private int membersCount;
     private boolean isPublic;
     private String subject;
+
+    public boolean isRecommended; // This field will indicate if the group is recommended
+
+
     private String dateTime; // Store both date and time as a String (e.g., "2024-12-01 15:00")
     private String description;
     private List<String> tags;
@@ -26,7 +30,7 @@ public class StudyGroup implements Serializable {
     public StudyGroup(String groupId, String groupName, String creatorId, String location,
                       String decodedLocationName, List<String> members, int membersCount,
                       boolean isPublic, String subject, String dateTime, String description,
-                      List<String> tags, String imageUrl) {
+                      List<String> tags, String imageUrl, boolean isRecommended) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.creatorId = creatorId;
@@ -40,6 +44,7 @@ public class StudyGroup implements Serializable {
         this.description = description;
         this.tags = tags;
         this.imageUrl = imageUrl;
+        this.isRecommended = isRecommended;
     }
 
     // Getters and Setters for all fields

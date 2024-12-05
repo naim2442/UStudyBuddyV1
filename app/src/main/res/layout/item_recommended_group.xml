@@ -12,6 +12,17 @@
         android:padding="16dp"
         android:background="@android:color/white">
 
+        <!-- Recommended Groups Label -->
+        <TextView
+            android:id="@+id/text_recommended_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recommended For You"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:visibility="gone"/>
 
         <!-- Group Name TextView -->
         <TextView

@@ -45,7 +45,7 @@ public class SignupDetailsActivity extends AppCompatActivity {
 
     private void setUpSpinners() {
         // Mock data for the spinners
-        String[] universities = {"UiTM", "UM", "UKM", "Taylor's University", "Monash University"};
+        String[] universities = {"UiTM", "MSU", "KUIS", "UNISEL", "POLITEKNIK"};
         ArrayAdapter<String> universityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, universities);
         universitySpinner.setAdapter(universityAdapter);
 
@@ -53,7 +53,7 @@ public class SignupDetailsActivity extends AppCompatActivity {
         ArrayAdapter<String> courseAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, courses);
         courseSpinner.setAdapter(courseAdapter);
 
-        String[] locations = {"Shah Alam", "Penang", "Johor Bahru", "Kuala Lumpur", "Sarawak"};
+        String[] locations = {"SEKSYEN 7", "SEKSYEN 13", "SETIA ALAM", "KOTA KEMUNING", "TTDI JAYA"};
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locations);
         locationPreferenceSpinner.setAdapter(locationAdapter);
     }
