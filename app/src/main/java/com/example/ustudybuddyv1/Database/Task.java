@@ -19,7 +19,9 @@ public class Task {
     private boolean isCompleted;
     private boolean isRecurring;
 
-    public Task(@NonNull String id, String title, String description, long dueDate, String priority, boolean isCompleted, boolean isRecurring) {
+    private String userId;
+
+    public Task(@NonNull String id, String title, String description, long dueDate, String priority, boolean isCompleted, boolean isRecurring, String userId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -27,6 +29,16 @@ public class Task {
         this.priority = priority != null ? priority : "Medium";  // Default to Medium if null
         this.isCompleted = isCompleted;
         this.isRecurring = isRecurring;
+        this.userId = userId;
+    }
+
+    // Getter and setter for userId
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @NonNull

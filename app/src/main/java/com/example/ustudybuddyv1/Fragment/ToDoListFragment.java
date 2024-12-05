@@ -28,6 +28,9 @@ import com.example.ustudybuddyv1.Adapter.TaskAdapter;
 import com.example.ustudybuddyv1.Database.Task;
 import com.example.ustudybuddyv1.Database.TaskDatabase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -45,6 +48,10 @@ public class ToDoListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
+
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = user != null ? user.getUid() : "default_user";
 
         // Initialize RecyclerView
         recyclerView = view.findViewById(R.id.recycler_view_todo);
@@ -111,8 +118,11 @@ public class ToDoListFragment extends Fragment {
 
     private void loadTasks() {
         new Thread(() -> {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String userId = user != null ? user.getUid() : "default_user"; // Replace with the actual user ID
+
             taskList.clear();
-            taskList.addAll(taskDatabase.taskDao().getAllTasks());
+            taskList.addAll(taskDatabase.taskDao().getTasksByUser(userId)); // Fetch tasks based on user ID
             getActivity().runOnUiThread(this::refreshRecyclerView);
         }).start();
     }
@@ -196,6 +206,10 @@ public class ToDoListFragment extends Fragment {
                     String selectedPriority = (String) spinnerPriority.getSelectedItem();
 
                     String taskId = UUID.randomUUID().toString();  // Generate a unique task ID
+                    // Get the current user's ID
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    String userId = user != null ? user.getUid() : "default_user";  // Replace with the actual user ID
+
 
                     // If due date is selected, use it; otherwise, create task without due date
                     long dueDateMillis = 0;  // Default value for no due date
@@ -204,7 +218,7 @@ public class ToDoListFragment extends Fragment {
                         dueDateMillis = calendar.getTimeInMillis();
                     }
 
-                    Task newTask = new Task(taskId, title, description, dueDateMillis, selectedPriority, false, false);
+                    Task newTask = new Task(taskId, title, description, dueDateMillis, selectedPriority, false, false, userId); // Add userId
 
                     new Thread(() -> {
                         taskDatabase.taskDao().insert(newTask);

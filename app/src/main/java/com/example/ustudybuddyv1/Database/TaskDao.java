@@ -20,6 +20,9 @@ public interface TaskDao {
     @Delete
     void delete(Task task);
 
-    @Query("SELECT * FROM tasks ORDER BY dueDate ASC")
-    List<Task> getAllTasks();
+    // Fetch tasks for a specific user
+    @Query("SELECT * FROM tasks WHERE userId = :userId ORDER BY dueDate ASC")
+    List<Task> getTasksByUser(String userId);
+
+
 }

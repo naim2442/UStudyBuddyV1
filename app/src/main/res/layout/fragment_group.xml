@@ -22,7 +22,7 @@
                 android:id="@+id/text_create_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You have no study groups! Create or join any study groups"
+                android:text="Create or join any study groups!"
                 android:textSize="16sp"
                 android:gravity="center"
                 android:layout_marginBottom="8dp" />

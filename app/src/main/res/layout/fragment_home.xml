@@ -165,7 +165,7 @@
             android:id="@+id/latest_study_tips_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Latest Study Tips"
+            android:text="Study Tips"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
