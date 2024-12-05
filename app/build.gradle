@@ -51,7 +51,6 @@ dependencies {
 
 
 
-
     // Firebase dependencies
     implementation 'com.google.firebase:firebase-storage:21.0.1'
     implementation 'com.google.firebase:firebase-database:21.0.0'

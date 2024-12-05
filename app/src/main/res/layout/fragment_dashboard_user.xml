@@ -1,6 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Total Groups Joined -->
+    <TextView
+        android:id="@+id/totalGroupsJoined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Groups Joined: 0"
+        android:textSize="18sp" />
+
+    <!-- Upcoming Group Sessions -->
+    <TextView
+        android:id="@+id/upcomingGroupSessions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upcoming Group Sessions: 0"
+        android:textSize="18sp" />
+
+    <!-- Total To-Do List Tasks -->
+    <TextView
+        android:id="@+id/totalToDoList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total To-Do List Tasks: 0"
+        android:textSize="18sp" />
+</LinearLayout>

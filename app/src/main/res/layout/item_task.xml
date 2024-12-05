@@ -4,22 +4,25 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <!-- Task Title -->
     <TextView
         android:id="@+id/task_title"
-        android:layout_width="279dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textStyle="bold" />
 
+    <!-- Task Description -->
     <TextView
         android:id="@+id/task_description"
-        android:layout_width="277dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp" />
 
+    <!-- Task Due Date -->
     <TextView
         android:id="@+id/task_due_date"
-        android:layout_width="278dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp" />
 
@@ -30,4 +33,34 @@
         android:layout_height="10dp"
         android:layout_marginTop="8dp"
         android:layout_gravity="start"/>
+
+    <!-- Task Completion Slider -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/completion_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0%"
+            android:textSize="14sp"
+            android:layout_marginEnd="8dp"
+            android:textColor="#757575"/>
+
+        <SeekBar
+            android:id="@+id/task_completion_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="100"
+            android:progress="0"
+            android:thumb="@drawable/baseline_thumb_up_24"
+            android:progressDrawable="@drawable/seekbar_progress"
+            android:background="@drawable/seekbar_background"/>
+
+    </LinearLayout>
 </LinearLayout>

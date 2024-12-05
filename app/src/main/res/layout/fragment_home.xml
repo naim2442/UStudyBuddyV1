@@ -21,6 +21,59 @@
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
 
+        <!-- Stats Section -->
+        <TextView
+            android:id="@+id/stats_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Statistics"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/white"
+            android:padding="8dp">
+
+            <!-- Total Groups Joined -->
+            <TextView
+                android:id="@+id/total_groups_joined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Groups: 5"
+                android:layout_marginEnd="16dp"
+                android:textSize="16sp"/>
+
+            <!-- Upcoming Sessions -->
+            <TextView
+                android:id="@+id/upcoming_sessions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upcoming Sessions: 2"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/white"
+            android:padding="8dp">
+
+            <!-- Total To-Do List -->
+            <TextView
+                android:id="@+id/total_todo_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To-Do List: 10"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
         <!-- Announcements -->
         <TextView
             android:id="@+id/announcements_title"
@@ -52,45 +105,7 @@
 
 
 
-        <!-- Personalized Dashboard -->
-        <TextView
-            android:id="@+id/personalized_dashboard_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Personalized Dashboard"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
-            android:background="@android:color/white"
-            android:padding="8dp">
-
-            <!-- Dashboard Item Example -->
-            <TextView
-                android:id="@+id/study_hours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Study Hours: 5"
-                android:layout_marginEnd="16dp"/>
-            <TextView
-                android:id="@+id/upcoming_deadlines"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Deadlines: 3"/>
-        </LinearLayout>
-
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginBottom="16dp"/>
 
         <!-- Latest Study Groups Section -->
         <TextView
