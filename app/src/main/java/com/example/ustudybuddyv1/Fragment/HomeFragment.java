@@ -99,6 +99,20 @@ public class HomeFragment extends Fragment {
         });
 
 
+        //navigate to todolist
+        TextView todoListTitle = view.findViewById(R.id.todo_list_title);
+        todoListTitle.setOnClickListener(v -> {
+            ToDoListFragment toDoListFragment = new ToDoListFragment();
+
+            // Navigate to ToDoListFragment
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, toDoListFragment)
+                    .addToBackStack(null) // Optional: Adds to the back stack for proper navigation
+                    .commit();
+        });
+
+
         recyclerViewAnnouncements = view.findViewById(R.id.recycler_view_announcements);
         recyclerViewAnnouncements.setLayoutManager(new LinearLayoutManager(getActivity()));
         fetchAnnouncements();

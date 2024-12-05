@@ -1,7 +1,9 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingBottom="56dp"
+    android:clipToPadding="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -209,6 +211,8 @@
             android:text="To-Do List"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_marginBottom="8dp"/>
 
         <androidx.recyclerview.widget.RecyclerView

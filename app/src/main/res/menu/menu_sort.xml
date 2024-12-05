@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_sort_priority"
+        android:title="Sort by Priority" />
+    <item
+        android:id="@+id/action_sort_deadline"
+        android:title="Sort by Deadline" />
+    <item
+        android:id="@+id/action_sort_oldest"
+        android:title="Sort by Oldest" />
+    <item
+        android:id="@+id/action_sort_latest"
+        android:title="Sort by Latest" />
+</menu>

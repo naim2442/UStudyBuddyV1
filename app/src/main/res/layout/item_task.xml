@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/task_title"
+        android:layout_width="279dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/task_description"
+        android:layout_width="277dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/task_due_date"
+        android:layout_width="278dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp" />
+
+    <!-- Priority Color Indicator -->
+    <View
+        android:id="@+id/task_priority_indicator"
+        android:layout_width="50dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="start"/>
+</LinearLayout>
