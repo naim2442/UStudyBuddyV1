@@ -124,7 +124,7 @@ public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapRe
             Toast.makeText(this, "Error geocoding address", Toast.LENGTH_SHORT).show();
         }
     }
-    
+
 
 
 
