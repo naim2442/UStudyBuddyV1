@@ -36,7 +36,7 @@ import java.util.List;
 
 public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private EditText groupNameInput, groupSubjectInput, groupDescriptionInput, groupDateInput, groupTimeInput;
+    private EditText groupNameInput, groupSubjectInput, groupDescriptionInput, groupDateInput, groupTimeInput , locationInput;
     private TextView locationDisplay;
     private ChipGroup tagsChipGroup; // ChipGroup to display chips dynamically
     private GoogleMap googleMap;
@@ -60,6 +60,7 @@ public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapRe
         groupTimeInput = findViewById(R.id.group_time_input);  // Time input
         locationDisplay = findViewById(R.id.location_display);
         tagsChipGroup = findViewById(R.id.tags_container); // ChipGroup to hold tags
+        locationInput = findViewById(R.id.location_input); // Input for address
 
         // Set up map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -84,7 +85,50 @@ public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapRe
 
         // Add Date Picker
         groupDateInput.setOnClickListener(v -> showDatePicker());
+
+
+        // Handle address input to update location on map
+        locationInput.setOnEditorActionListener((v, actionId, event) -> {
+            String location = locationInput.getText().toString().trim();
+            if (!location.isEmpty()) {
+                geocodeAddress(location);  // Convert the address to coordinates
+            }
+            return true;
+        });
     }
+
+    // Method to geocode the address and place the marker
+    private void geocodeAddress(String address) {
+        Geocoder geocoder = new Geocoder(this);
+        try {
+            List<android.location.Address> addressList = geocoder.getFromLocationName(address, 1);
+            if (addressList != null && !addressList.isEmpty()) {
+                android.location.Address location = addressList.get(0);
+                selectedLatitude = location.getLatitude();
+                selectedLongitude = location.getLongitude();
+                selectedLocationName = location.getAddressLine(0); // Get full address
+
+                // Update the map with the selected location
+                LatLng selectedLatLng = new LatLng(selectedLatitude, selectedLongitude);
+                googleMap.clear(); // Clear any previous markers
+                googleMap.addMarker(new MarkerOptions().position(selectedLatLng).title(selectedLocationName));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLatLng, 15));
+
+                // Update location display text
+                locationDisplay.setText("Selected Location: " + selectedLocationName);
+            } else {
+                Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error geocoding address", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    
+
+
 
     private void showTimePicker() {
         // Get current time to set default time

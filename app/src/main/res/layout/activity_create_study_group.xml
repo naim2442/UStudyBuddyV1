@@ -137,6 +137,36 @@
                 android:onClick="showTimePicker" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <!-- Location Query Label and Input -->
+        <TextView
+            android:id="@+id/location_query_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter Location "
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/RoundedTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Location">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/location_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:inputType="text"
+                android:focusable="true"
+                android:cursorVisible="true"
+                android:gravity="start"
+                android:imeOptions="actionSearch"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
         <!-- Location Label and Display -->
         <TextView
             android:id="@+id/group_location_label"
