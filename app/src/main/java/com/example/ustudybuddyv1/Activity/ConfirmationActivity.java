@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class ConfirmationActivity extends AppCompatActivity {
 
@@ -119,6 +120,11 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
 
     private void saveGroupToFirebase() {
+
+        // Initialize the files node if not already done
+        if (studyGroup.getFiles() == null) {
+            studyGroup.setFiles(new HashMap<>());  // Ensure files is initialized
+        }
         // Save the study group object to Firebase Realtime Database
         FirebaseStudyGroupHelper.saveStudyGroup(studyGroup);
 

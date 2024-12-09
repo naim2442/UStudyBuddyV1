@@ -184,11 +184,11 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
             extension = extension.toLowerCase();
         }
 
-        // Check if the file type matches image extensions or allowed document types
-        return (extension != null &&
+        // Check if the file extension is allowed
+        return extension != null &&
                 (extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png") ||
                         extension.equals("pdf") || extension.equals("docx") || extension.equals("xls") ||
-                        extension.equals("xlsx") || mimeType != null && mimeType.startsWith("image/")));
+                        extension.equals("xlsx"));
     }
 
 

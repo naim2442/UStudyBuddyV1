@@ -3,6 +3,7 @@ package com.example.ustudybuddyv1.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class StudyGroup implements Serializable {
     private String groupId;
@@ -16,7 +17,7 @@ public class StudyGroup implements Serializable {
     private String subject;
 
     public boolean isRecommended; // This field will indicate if the group is recommended
-
+    private Map<String, Object> files; // This will hold the files for the group
 
     private String dateTime; // Store both date and time as a String (e.g., "2024-12-01 15:00")
     private String description;
@@ -30,7 +31,7 @@ public class StudyGroup implements Serializable {
     public StudyGroup(String groupId, String groupName, String creatorId, String location,
                       String decodedLocationName, List<String> members, int membersCount,
                       boolean isPublic, String subject, String dateTime, String description,
-                      List<String> tags, String imageUrl, boolean isRecommended) {
+                      List<String> tags, String imageUrl, boolean isRecommended, Map<String, Object> files) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.creatorId = creatorId;
@@ -45,6 +46,16 @@ public class StudyGroup implements Serializable {
         this.tags = tags;
         this.imageUrl = imageUrl;
         this.isRecommended = isRecommended;
+        this.files = files;
+    }
+
+
+    public Map<String, Object> getFiles() {
+        return files;
+    }
+
+    public void setFiles(Map<String, Object> files) {
+        this.files = files;
     }
 
     // Getters and Setters for all fields
