@@ -48,6 +48,8 @@ public class HomeFragment extends Fragment {
     private List<Announcement> announcements = new ArrayList<>();
     private TextView welcomeMessage;
 
+    private RecommendedGroupsAdapter recommendedGroupsAdapter;
+
     private List<Video> recommendedVideos = new ArrayList<>();
 
     private LatestGroupsAdapter latestGroupsAdapter;
@@ -137,8 +139,10 @@ public class HomeFragment extends Fragment {
         // Fetch daily tips from Firebase
         fetchDailyTips();
 
+        recyclerViewRecommended = view.findViewById(R.id.recycler_view_recommended);
+        recyclerViewRecommended.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-
+        fetchRecommendedGroups(); // Call this method to fetch and display recommended groups
 
 
         // Set up layout manager for RecyclerView
@@ -188,7 +192,6 @@ public class HomeFragment extends Fragment {
         // Fetch public groups to display in the latest groups RecyclerView
         fetchPublicGroups();
 
-        fetchRecommendedGroups();
 
 
 
@@ -257,17 +260,18 @@ public class HomeFragment extends Fragment {
 
     private void fetchRecommendedGroups() {
         // Fetch current user ID
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Reference to the "users" node to get the current user's course and university
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     // Fetch user's course and university from the snapshot
-                    String userCourse = snapshot.child("course").getValue(String.class);
-                    String userUniversity = snapshot.child("university").getValue(String.class);
+                    userCourse = snapshot.child("course").getValue(String.class);
+                    userUniversity = snapshot.child("university").getValue(String.class);
+
 
                     // Now fetch study groups
                     DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference("study_groups");
@@ -303,7 +307,6 @@ public class HomeFragment extends Fragment {
 
     private void fetchCreatorDetails(String creatorId, StudyGroup group, String userCourse, String userUniversity, List<StudyGroup> groups) {
         // Reference to the "users" node to get the creator's course and university
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference creatorRef = FirebaseDatabase.getInstance().getReference("users").child(creatorId);
         creatorRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -320,23 +323,25 @@ public class HomeFragment extends Fragment {
                     }
 
                     // After processing all groups, update the RecyclerView
-                    if (groups.size() == snapshot.getChildrenCount()) {
-                        // Limit the groups to only 3 for the home page
-                        List<StudyGroup> limitedGroups = new ArrayList<>();
-                        for (int i = 0; i < Math.min(groups.size(), 3); i++) {
-                            limitedGroups.add(groups.get(i));
-                        }
-
-                        // Set up RecyclerView to scroll horizontally
-                        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                        recyclerViewRecommended.setLayoutManager(horizontalLayoutManager);
-
-                        // Pass the limited groups list and user ID to the adapter
-                        // Assuming you have a list of filtered groups
-                        RecommendedGroupsAdapter adapter = new RecommendedGroupsAdapter(limitedGroups, currentUserId);
-                        recyclerViewRecommended.setAdapter(adapter);
-
+                    // Limit the groups to only 3 for the home page
+                    List<StudyGroup> limitedGroups = new ArrayList<>();
+                    for (int i = 0; i < Math.min(groups.size(), 3); i++) {
+                        limitedGroups.add(groups.get(i));
                     }
+
+                    // Set up RecyclerView to scroll horizontally
+                    LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                    recyclerViewRecommended.setLayoutManager(horizontalLayoutManager);
+
+                    // Pass the limited groups list and user ID to the adapter
+                    recommendedGroupsAdapter = new RecommendedGroupsAdapter(limitedGroups, currentUserId);
+                    recyclerViewRecommended.setAdapter(recommendedGroupsAdapter);
+
+                    // Notify the adapter of data changes
+                    if (recommendedGroupsAdapter != null) {
+                        recommendedGroupsAdapter.notifyDataSetChanged();
+                    }
+
                 }
             }
 
