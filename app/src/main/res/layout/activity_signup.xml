@@ -55,6 +55,8 @@
         android:text="Already Registered? Log in here."
         android:textColor="#4F8EF7"
         android:textSize="14sp"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />

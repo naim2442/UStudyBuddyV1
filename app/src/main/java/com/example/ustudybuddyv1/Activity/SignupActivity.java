@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,17 @@ public class SignupActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password);
         studentIdEditText = findViewById(R.id.student_id);
         signupButton = findViewById(R.id.next_button);
+        TextView subtitle = findViewById(R.id.subtitle);
+
+        subtitle = findViewById(R.id.subtitle);
+        subtitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         signupButton.setOnClickListener(v -> {
             String name = nameEditText.getText().toString();
@@ -44,6 +57,9 @@ public class SignupActivity extends AppCompatActivity {
                 registerUser(name, email, password, studentId);
             }
         });
+
+
+
     }
 
     private boolean isInputValid(String name, String email, String password, String studentId) {
