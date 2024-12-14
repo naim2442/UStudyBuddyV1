@@ -22,6 +22,8 @@ import com.example.ustudybuddyv1.Adapter.RecommendedGroupsAdapter;
 import com.example.ustudybuddyv1.Adapter.RecommendedVideosAdapter;
 import com.example.ustudybuddyv1.Adapter.StudyGroupAdapter;
 import com.example.ustudybuddyv1.Adapter.StudyTipAdapter;
+import com.example.ustudybuddyv1.Database.TaskDao;
+import com.example.ustudybuddyv1.Database.TaskDatabase;
 import com.example.ustudybuddyv1.Model.Announcement;
 import com.example.ustudybuddyv1.Model.MotivationalQuote;
 import com.example.ustudybuddyv1.Model.StudyTip;
@@ -36,9 +38,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
@@ -192,11 +198,108 @@ public class HomeFragment extends Fragment {
         // Fetch public groups to display in the latest groups RecyclerView
         fetchPublicGroups();
 
-
+//fetch user statistics
+        loadUserStatistics();
 
 
         return view;
     }
+    private void loadUserStatistics() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Get reference to the study groups from Firebase
+        DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference("study_groups");
+
+        // Retrieve study groups
+        groupsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // **Fix**: Null check for the root view to avoid NullPointerException
+                View rootView = getView();
+                if (rootView == null) {
+                    return; // If the view is not available, exit the method to avoid exceptions
+                }
+
+                int totalGroupsJoined = 0;
+
+                for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
+                    StudyGroup group = groupSnapshot.getValue(StudyGroup.class);
+                    if (group != null && group.getMembers() != null && group.getMembers().contains(userId)) {
+                        totalGroupsJoined++;
+                    }
+                }
+
+                // **Fix**: Correctly reference the TextView for total groups joined by the user inside Fragment
+                TextView totalGroupsText = rootView.findViewById(R.id.total_groups_joined);
+                totalGroupsText.setText("Total Groups Joined: " + totalGroupsJoined);
+
+                // Initialize variable to store the nearest upcoming session
+                Date nearestSessionDate = null;
+
+                for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
+                    StudyGroup group = groupSnapshot.getValue(StudyGroup.class);
+                    if (group != null) {
+                        try {
+                            // Convert group date to Date object
+                            Date groupDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).parse(group.getDateTime());
+
+                            // Check if the group is upcoming
+                            if (groupDate != null && groupDate.after(new Date())) {  // After current date
+                                if (nearestSessionDate == null || groupDate.before(nearestSessionDate)) {
+                                    nearestSessionDate = groupDate;
+                                }
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                // **Fix**: Correctly reference the TextView for upcoming sessions inside Fragment
+                TextView upcomingSessionsText = rootView.findViewById(R.id.upcoming_sessions);
+                if (nearestSessionDate != null) {
+                    String dateStr = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(nearestSessionDate);
+                    upcomingSessionsText.setText("Upcoming Session: " + dateStr);
+                } else {
+                    upcomingSessionsText.setText("No upcoming sessions.");
+                }
+
+                // **Fix**: Retrieve total To-Do list count from Room database asynchronously
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // **Fix**: Ensure to call database operation on background thread
+                        int totalTodos = getTotalTodosFromRoomDatabase(userId); // Pass userId if needed
+                        // Update UI on the main thread
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // **Fix**: Correctly reference the TextView for to-do list inside Fragment
+                                TextView totalTodosText = rootView.findViewById(R.id.total_todo_list);
+                                totalTodosText.setText("To-Do List: " + totalTodos);
+                            }
+                        });
+                    }
+                }).start();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error (for example, show a Toast or log the error)
+                Log.e("UserStatistics", "Failed to load data: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    // Helper method to get the total number of to-dos from Room database
+    private int getTotalTodosFromRoomDatabase(String userId) {
+        // **Fix**: Make sure you're running the database query on a background thread (which is already done)
+        TaskDao taskDao = TaskDatabase.getInstance(getContext()).taskDao();
+
+        // Perform database query synchronously on a background thread (no UI updates here)
+        return taskDao.getTotalTodos() - 1 ;  // You could also pass userId if you want user-specific tasks
+    }
+
 
     private void fetchUserData() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();

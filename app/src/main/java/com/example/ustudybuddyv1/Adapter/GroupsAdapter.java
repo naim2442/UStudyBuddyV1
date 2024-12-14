@@ -11,6 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ustudybuddyv1.Model.StudyGroup;
 import com.example.ustudybuddyv1.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -39,6 +44,26 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupViewH
 
         // Set up the delete button
         holder.btnDelete.setOnClickListener(v -> deleteClickListener.onDeleteClick(group));
+
+        // Listen for updates to the group's status in Firebase
+        DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("study_groups").child(group.getGroupId());
+        groupRef.child("status").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status = dataSnapshot.getValue(String.class);
+                // If the status is "requested_for_deletion", make the "Requested for Deletion" text visible
+                if ("requested_for_deletion".equals(status)) {
+                    holder.tvRequestedForDeletion.setVisibility(View.VISIBLE);
+                } else {
+                    holder.tvRequestedForDeletion.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors here if needed
+            }
+        });
     }
 
     @Override
@@ -51,7 +76,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupViewH
     }
 
     public static class GroupViewHolder extends RecyclerView.ViewHolder {
-        TextView tvGroupName, tvDescription;
+        TextView tvGroupName, tvDescription, tvRequestedForDeletion;
         Button btnDelete;
 
         public GroupViewHolder(View itemView) {
@@ -59,6 +84,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupViewH
             tvGroupName = itemView.findViewById(R.id.tvGroupName);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             btnDelete = itemView.findViewById(R.id.btnDeleteGroup);
+            tvRequestedForDeletion = itemView.findViewById(R.id.tvRequestedForDeletion);
         }
     }
 }

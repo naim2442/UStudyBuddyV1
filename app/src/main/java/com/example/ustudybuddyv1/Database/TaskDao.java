@@ -24,5 +24,9 @@ public interface TaskDao {
     @Query("SELECT * FROM tasks WHERE userId = :userId ORDER BY dueDate ASC")
     List<Task> getTasksByUser(String userId);
 
+    @Query("SELECT COUNT(*) FROM tasks")
+    int getTotalTodos();
+
+
 
 }

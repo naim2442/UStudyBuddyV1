@@ -64,6 +64,35 @@
                 android:background="@drawable/rounded_button"
                 android:text="View Files" />
         </LinearLayout>
+
+        <!-- Requested for Deletion TextView (Initially hidden) -->
+        <TextView
+            android:id="@+id/tvRequestedForDeletion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Requested for Deletion"
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_red_dark"
+            android:visibility="gone"
+        android:paddingBottom="8dp" />
+
+
+
+
+        <!-- Delete Group Button -->
+        <Button
+            android:id="@+id/button_delete_group"
+            android:layout_width="127dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="sans-serif-medium"
+            android:text="Delete Group"
+            android:visibility="gone"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
     </LinearLayout>
 
     <!-- Separator Line -->

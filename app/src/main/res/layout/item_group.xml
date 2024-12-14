@@ -25,6 +25,18 @@
         android:textSize="14sp"
         android:paddingBottom="8dp" />
 
+    <!-- Requested for Deletion TextView (Initially hidden) -->
+    <TextView
+        android:id="@+id/tvRequestedForDeletion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Requested for Deletion"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        android:paddingBottom="8dp" />
+
+    <!-- Delete Group Button -->
     <Button
         android:id="@+id/btnDeleteGroup"
         android:layout_width="wrap_content"
@@ -32,7 +44,4 @@
         android:text="Delete Group"
         android:textColor="#FFFFFF"
         android:background="@color/colorDeleteButton" />  <!-- Red background from colors.xml -->
-
-
-
 </LinearLayout>

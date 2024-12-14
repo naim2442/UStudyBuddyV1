@@ -175,7 +175,13 @@ public class StudyGroup implements Serializable {
         }
         if (!members.contains(userId)) {
             members.add(userId);
-            membersCount++;  // Increment the member count
+            membersCount = members.size();  // Update the membersCount based on the list size
+        }
+    }
+
+    public void leaveGroup(String userId) {
+        if (members != null) {
+            members.remove(userId);
         }
     }
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ustudybuddyv1.Model.StudyGroup;
@@ -116,11 +117,23 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         // Check if the user is the creator or already a member
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        if (studyGroup.getCreatorId().equals(userId) || studyGroup.isMember(userId)) {
-            binding.buttonJoinGroup.setVisibility(View.GONE);  // Hide button if user is creator or already joined
+        // Check if the user is the group creator
+        if (studyGroup.getCreatorId().equals(userId)) {
+            // Hide both Join and Leave buttons for the creator
+            binding.buttonJoinGroup.setVisibility(View.GONE);
+            binding.buttonLeaveGroup.setVisibility(View.GONE);
+        } else if (studyGroup.isMember(userId)) {
+            // If the user is a member, show the Leave button and hide the Join button
+            binding.buttonJoinGroup.setVisibility(View.GONE);
+            binding.buttonLeaveGroup.setVisibility(View.VISIBLE);
         } else {
-            binding.buttonJoinGroup.setVisibility(View.VISIBLE);  // Show button if user can join
+            // If the user is not a member, show the Join button and hide the Leave button
+            binding.buttonJoinGroup.setVisibility(View.VISIBLE);
+            binding.buttonLeaveGroup.setVisibility(View.GONE);
         }
+
+        // Handle Leave Group button click
+        binding.buttonLeaveGroup.setOnClickListener(v -> leaveGroup());
     }
 
     private void joinGroup() {
@@ -138,6 +151,41 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             }
         });
     }
+
+
+    private void leaveGroup() {
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+        // Create an AlertDialog to confirm leaving the group
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Leave")
+                .setMessage("Are you sure you want to leave this group?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // Remove the user from the group
+                    studyGroup.leaveGroup(userId);
+                    DatabaseReference groupRef = FirebaseDatabase.getInstance()
+                            .getReference("study_groups")
+                            .child(studyGroup.getGroupId());
+
+                    groupRef.setValue(studyGroup).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(this, "You left the group!", Toast.LENGTH_SHORT).show();
+                            binding.buttonLeaveGroup.setVisibility(View.GONE); // Hide leave button
+                            binding.buttonJoinGroup.setVisibility(View.VISIBLE); // Show join button
+                        } else {
+                            Toast.makeText(this, "Failed to leave the group.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    // Do nothing if user clicks "No"
+                    dialog.dismiss();
+                })
+                .create()
+                .show(); // Show the dialog
+    }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

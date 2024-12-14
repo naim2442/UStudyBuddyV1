@@ -70,15 +70,58 @@ public class StudyGroupDetailActivity extends AppCompatActivity {
         viewDetailsButton = findViewById(R.id.button_view_details);
         viewFilesButton = findViewById(R.id.button_view_files);
         attachFileButton = findViewById(R.id.attach_file_button);  // Initialize the attach button
+        Button deleteGroupButton = findViewById(R.id.button_delete_group);  // Get the delete button
+        TextView tvRequestedForDeletion = findViewById(R.id.tvRequestedForDeletion);
 
-        // Attach file button listener
-        attachFileButton.setOnClickListener(v -> openFilePicker());
 
         // Get the group data passed from the previous activity
         StudyGroup group = (StudyGroup) getIntent().getSerializableExtra("group");
 
+
+// When the creator clicks the Delete Group button
+        deleteGroupButton.setOnClickListener(v -> {
+            // Create an AlertDialog to confirm the deletion request
+            new AlertDialog.Builder(StudyGroupDetailActivity.this)
+                    .setTitle("Confirm Deletion")
+                    .setMessage("Are you sure you want to request the deletion of this group?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // Make the "Requested for Deletion" message visible
+                        tvRequestedForDeletion.setVisibility(View.VISIBLE);
+
+                        // Update the group status in Firebase to mark it as requested for deletion
+                        DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("study_groups").child(group.getGroupId());
+                        groupRef.child("status").setValue("requested_for_deletion");
+
+                        // Show a confirmation message (optional)
+                        Toast.makeText(StudyGroupDetailActivity.this, "Group deletion request sent to admin.", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("No", (dialog, which) -> {
+                        // Do nothing if user clicks "No"
+                        dialog.dismiss();
+                    })
+                    .create()
+                    .show(); // Show the dialog
+        });
+
+
+
+
+        // Attach file button listener
+        attachFileButton.setOnClickListener(v -> openFilePicker());
+
+
+
         if (group != null) {
             displayGroupDetails(group);
+
+            // Check if the current user is the owner of the group
+            if (group.getCreatorId().equals(currentUserId)) {
+                // Make the "Delete Group" button visible
+                deleteGroupButton.setVisibility(View.VISIBLE);
+            } else {
+                // Hide the "Delete Group" button
+                deleteGroupButton.setVisibility(View.GONE);
+            }
 
             // Initialize chat reference based on group ID
             chatRef = studyGroupsRef.child(group.getGroupId()).child("messages");
