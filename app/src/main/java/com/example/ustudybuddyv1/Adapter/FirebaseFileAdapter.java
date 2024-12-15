@@ -61,6 +61,13 @@ public class FirebaseFileAdapter extends BaseAdapter {
             }
         });
 
+
+        // Find the TextViews
+        TextView uploadedByTextView = convertView.findViewById(R.id.uploaded_by);
+
+        // Set the file name and uploaded by values
+        uploadedByTextView.setText("Uploaded By: " + fileDetails.getUploadedBy());
+
         return convertView;
     }
 

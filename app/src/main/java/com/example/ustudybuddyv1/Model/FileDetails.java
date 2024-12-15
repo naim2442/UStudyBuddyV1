@@ -5,6 +5,8 @@ public class FileDetails {
     private String fileUrl;
     private long timestamp;
 
+    private String uploadedBy;
+
     public FileDetails() {
         // Default constructor required for Firebase
     }
@@ -13,6 +15,17 @@ public class FileDetails {
         this.fileName = fileName;
         this.fileUrl = fileUrl;
 
+    }
+
+    public FileDetails(String fileName, String fileUrl) {
+        this.fileName = fileName;
+        this.fileUrl = fileUrl;
+    }
+
+    public FileDetails(String fileName, String fileUrl, String uploadedBy) {
+        this.fileName = fileName;
+        this.fileUrl = fileUrl;
+        this.uploadedBy = uploadedBy;
     }
 
     // Getters and setters
@@ -38,5 +51,13 @@ public class FileDetails {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getUploadedBy() {
+        return uploadedBy;
+    }
+
+    public void setUploadedBy(String uploadedBy) {
+        this.uploadedBy = uploadedBy;
     }
 }
