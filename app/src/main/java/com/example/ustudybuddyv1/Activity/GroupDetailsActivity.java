@@ -26,6 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
@@ -69,6 +72,17 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         binding.textGroupSubject.setText(studyGroup.getSubject());
         binding.textGroupDescription.setText(studyGroup.getDescription());
         binding.textGroupDatetime.setText(studyGroup.getDateTime());
+
+
+        // Load the group image from Firebase Storage using Picasso
+        String imageUrl = studyGroup.getImageUrl(); // Assuming you have an imageUrl property in StudyGroup
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            // Use Picasso to load the image into the ImageView
+            Picasso.get().load(imageUrl).into(binding.groupImageView);
+        } else {
+            // Set a default image or handle the case where there's no image
+            binding.groupImageView.setImageResource(R.drawable.app_logo_alt);
+        }
 
         // Set tags
         if (studyGroup.getTags() != null && !studyGroup.getTags().isEmpty()) {

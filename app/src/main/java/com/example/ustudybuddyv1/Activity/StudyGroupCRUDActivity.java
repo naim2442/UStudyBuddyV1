@@ -33,7 +33,11 @@ import com.google.android.material.chip.ChipGroup;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+import android.content.Intent;
+import android.net.Uri;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import java.util.UUID;
 public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private EditText groupNameInput, groupSubjectInput, groupDescriptionInput, groupDateInput, groupTimeInput , locationInput;
@@ -45,6 +49,9 @@ public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapRe
     private static final double DEFAULT_LAT = 3.0736; // Example lat
     private static final double DEFAULT_LNG = 101.6073; // Example lng
     private List<String> customTags = new ArrayList<>(); // Store custom tags
+
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri selectedImageUri;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -61,7 +68,9 @@ public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapRe
         locationDisplay = findViewById(R.id.location_display);
         tagsChipGroup = findViewById(R.id.tags_container); // ChipGroup to hold tags
         locationInput = findViewById(R.id.location_input); // Input for address
+        Button uploadImageButton = findViewById(R.id.upload_image_button);
 
+        uploadImageButton.setOnClickListener(v -> openImageChooser());
         // Set up map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -95,6 +104,50 @@ public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapRe
             }
             return true;
         });
+    }
+
+
+    private void openImageChooser() {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            selectedImageUri = data.getData();
+            // You can display the selected image in an ImageView here (optional)
+        }
+    }
+
+    private void uploadImage() {
+        if (selectedImageUri != null) {
+            // Get reference to Firebase Storage
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageReference = storage.getReference();
+
+            // Create a unique file name for the image
+            String fileName = UUID.randomUUID().toString() + ".jpg";
+            StorageReference fileReference = storageReference.child("study_group_images/" + fileName);
+
+            // Upload the image
+            fileReference.putFile(selectedImageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // Get the URL of the uploaded image
+                        fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                            String imageUrl = uri.toString();
+                            // Store the image URL in your StudyGroup object
+                            StudyGroup group = new StudyGroup();
+                            group.setImageUrl(imageUrl);
+                            // Proceed with group creation as normal
+                            createGroup();
+                        });
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(StudyGroupCRUDActivity.this, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 
     // Method to geocode the address and place the marker
@@ -312,9 +365,39 @@ public class StudyGroupCRUDActivity extends AppCompatActivity implements OnMapRe
         String creatorId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         group.setCreatorId(creatorId); // Add creatorId to the group
 
-        // Pass to the confirmation activity
-        Intent intent = new Intent(this, ConfirmationActivity.class);
-        intent.putExtra("studyGroup", group);
-        startActivity(intent);
+        // Handle the image upload if there's an image selected
+        if (selectedImageUri != null) {
+            // Create a reference to Firebase Storage
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference imageRef = storageRef.child("group_images/" + UUID.randomUUID().toString());  // Unique image path
+
+            // Upload the image to Firebase Storage
+            imageRef.putFile(selectedImageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // Get the image URL after the upload is complete
+                        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            // Set the image URL in the group object
+                            group.setImageUrl(uri.toString());
+
+                            // Pass the StudyGroup object to the confirmation activity
+                            Intent intent = new Intent(this, ConfirmationActivity.class);
+                            intent.putExtra("studyGroup", group);
+                            startActivity(intent);
+                        }).addOnFailureListener(e -> {
+                            // Handle failure in retrieving the image URL
+                            Toast.makeText(this, "Failed to get image URL", Toast.LENGTH_SHORT).show();
+                        });
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure in image upload
+                        Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            // If no image is selected, just proceed with the group creation without the image
+            Intent intent = new Intent(this, ConfirmationActivity.class);
+            intent.putExtra("studyGroup", group);
+            startActivity(intent);
+        }
     }
+
 }

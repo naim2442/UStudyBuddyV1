@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.ustudybuddyv1.Helper.FirebaseStudyGroupHelper;
 import com.example.ustudybuddyv1.Helper.FirebaseStorageHelper;
 import com.example.ustudybuddyv1.Model.StudyGroup;
@@ -66,10 +67,11 @@ public class ConfirmationActivity extends AppCompatActivity {
         // Display the group image or a placeholder
         if (studyGroup.getImageUrl() != null) {
             // If there is an image URL, load the image here
-            // You could use a library like Picasso or Glide to load the image
-            // Picasso.get().load(studyGroup.getImageUrl()).into(groupImageDisplay);
+            Glide.with(this)
+                    .load(studyGroup.getImageUrl())  // Load the image URL from the StudyGroup object
+                    .into(groupImageDisplay);  // Set it into the ImageView
         } else {
-            groupImageDisplay.setImageResource(R.drawable.logo);
+            groupImageDisplay.setImageResource(R.drawable.logo);  // Use placeholder if no image URL
         }
 
         // Display the formatted date and time
@@ -118,6 +120,7 @@ public class ConfirmationActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void saveGroupToFirebase() {
 
