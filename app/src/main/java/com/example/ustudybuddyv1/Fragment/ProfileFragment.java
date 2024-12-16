@@ -28,6 +28,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,7 +73,6 @@ public class ProfileFragment extends Fragment {
             cgpaTextView = view.findViewById(R.id.cgpa_text_view);
             semesterYearTextView = view.findViewById(R.id.semester_year_text_view);
             highestEducationTextView = view.findViewById(R.id.highest_education_level_text_view);
-
 
             // Initialize Buttons
             changePasswordButton = view.findViewById(R.id.edit_button);
@@ -127,6 +130,12 @@ public class ProfileFragment extends Fragment {
                     cgpaTextView.setText(cgpa);
                     semesterYearTextView.setText(semesterYear);
                     highestEducationTextView.setText(highestEducation);
+
+                    // Load profile picture from Firebase
+                    String profilePictureUrl = dataSnapshot.child("profilePictureUrl").getValue(String.class);
+                    if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                        Picasso.get().load(profilePictureUrl).into(profileImageView);
+                    }
                 } else {
                     Toast.makeText(getActivity(), "User profile not found", Toast.LENGTH_SHORT).show();
                 }
@@ -195,7 +204,7 @@ public class ProfileFragment extends Fragment {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                     profileImageView.setImageBitmap(bitmap);
-                    saveImageLocally(bitmap);
+                    uploadProfilePictureToFirebase(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Failed to load image", Toast.LENGTH_SHORT).show();
@@ -203,18 +212,34 @@ public class ProfileFragment extends Fragment {
             } else if (requestCode == TAKE_PICTURE_REQUEST && data != null) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 profileImageView.setImageBitmap(photo);
-                saveImageLocally(photo);
+                uploadProfilePictureToFirebase(photo);
             }
         }
     }
 
-    private void saveImageLocally(Bitmap bitmap) {
-        File directory = getContext().getFilesDir(); // Use internal storage
-        File file = new File(directory, "profile_picture.png");
+    private void uploadProfilePictureToFirebase(Bitmap bitmap) {
+        // Create a reference to Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference("profile_pictures")
+                .child(mAuth.getCurrentUser().getUid() + ".jpg");
 
+        // Compress the bitmap to a file
+        File file = new File(getActivity().getCacheDir(), "profile_picture.jpg");
         try (FileOutputStream fos = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos); // Save the bitmap as a PNG file
-            Toast.makeText(getContext(), "Profile picture saved locally", Toast.LENGTH_SHORT).show();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            Uri fileUri = Uri.fromFile(file);
+
+            // Upload the file to Firebase Storage
+            UploadTask uploadTask = storageReference.putFile(fileUri);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                // Get the download URL
+                storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String profilePictureUrl = uri.toString();
+                    // Update the user profile with the URL
+                    databaseReference.child("profilePictureUrl").setValue(profilePictureUrl);
+                    Toast.makeText(getContext(), "Profile picture updated", Toast.LENGTH_SHORT).show();
+                });
+            }).addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to upload image", Toast.LENGTH_SHORT).show());
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "Failed to save image", Toast.LENGTH_SHORT).show();

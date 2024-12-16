@@ -64,7 +64,7 @@ public class StudentDetailsActivity extends AppCompatActivity {
                     String email = snapshot.child("email").getValue(String.class);
                     String university = snapshot.child("university").getValue(String.class);
                     String course = snapshot.child("course").getValue(String.class);
-                    String profileImageUrl = snapshot.child("profilePicture").getValue(String.class);
+                    String profileImageUrl = snapshot.child("profilePictureUrl").getValue(String.class);
 
                     // Fetching the new fields
                     String cgpa = snapshot.child("cgpa").getValue(String.class);

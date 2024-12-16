@@ -10,6 +10,16 @@
     android:paddingBottom="16dp">
 
     <!-- CGPA Field -->
+    <!-- CGPA Instruction -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter your current CGPA"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- CGPA Field -->
     <EditText
         android:id="@+id/cgpa_edit_text"
         android:layout_width="match_parent"
@@ -22,6 +32,16 @@
         android:textColor="@android:color/black"
         android:textColorHint="@android:color/darker_gray" />
 
+
+    <!-- Highest Education Level Instruction -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Highest Education Level: "
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="8dp"/>
+
     <!-- Highest Education Level Spinner -->
     <Spinner
         android:id="@+id/highest_education_level_spinner"
@@ -29,6 +49,15 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_edittext"/>
+
+    <!-- Semester Year Instruction -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Current semester year."
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="8dp"/>
 
     <!-- Semester Year Field -->
     <EditText
