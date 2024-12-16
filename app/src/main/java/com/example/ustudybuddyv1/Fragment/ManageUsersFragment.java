@@ -1,10 +1,12 @@
 package com.example.ustudybuddyv1.Fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageUsersFragment extends Fragment {
+public class ManageUsersFragment extends Fragment implements UserAdapter.OnDeleteClickListener {
 
     private RecyclerView rvUsers;
     private UserAdapter userAdapter;
@@ -42,7 +44,7 @@ public class ManageUsersFragment extends Fragment {
 
         rvUsers.setLayoutManager(new LinearLayoutManager(requireContext()));
         userList = new ArrayList<>();
-        userAdapter = new UserAdapter(userList);
+        userAdapter = new UserAdapter(userList, this);  // Pass 'this' to handle delete
         rvUsers.setAdapter(userAdapter);
 
         fetchUsers(); // Fetch user data from Firebase
@@ -75,6 +77,32 @@ public class ManageUsersFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void onDeleteClick(User user) {
+        // Show confirmation dialog before deletion
+        new android.app.AlertDialog.Builder(requireContext())
+                .setTitle("Confirm Deletion")
+                .setMessage("Are you sure you want to delete this user?")
+                .setPositiveButton("Yes", (dialog, which) -> deleteUser(user))
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void deleteUser(User user) {
+        // Get reference to the user node in Firebase
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUserId());
+
+        // Remove the user from Firebase
+        userRef.removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(requireContext(), "User deleted", Toast.LENGTH_SHORT).show();
+                fetchUsers();  // Refresh the list
+            } else {
+                Toast.makeText(requireContext(), "Failed to delete user", Toast.LENGTH_SHORT).show();
             }
         });
     }

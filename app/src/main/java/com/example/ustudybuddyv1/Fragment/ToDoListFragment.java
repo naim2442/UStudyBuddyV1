@@ -23,6 +23,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ustudybuddyv1.Database.TaskDao;
 import com.example.ustudybuddyv1.R;
 import com.example.ustudybuddyv1.Adapter.TaskAdapter;
 import com.example.ustudybuddyv1.Database.Task;
@@ -44,6 +46,8 @@ public class ToDoListFragment extends Fragment {
     private List<Task> taskList;
     private TaskDatabase taskDatabase;
 
+    private TaskDao taskDao;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,10 +61,13 @@ public class ToDoListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view_todo);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize database and task list
-        taskDatabase = TaskDatabase.getInstance(getContext());
+        // Using requireContext() to make sure context is valid
+        taskDatabase = TaskDatabase.getInstance(requireContext());
+
+
         taskList = new ArrayList<>();
-        taskAdapter = new TaskAdapter(taskList);
+        taskDao = taskDatabase.taskDao(); // Get TaskDao instance from TaskDatabase
+        taskAdapter = new TaskAdapter(taskList, taskDao);
 
         recyclerView.setAdapter(taskAdapter);
 

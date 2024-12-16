@@ -1,66 +1,82 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_margin="8dp">
 
-    <!-- Task Title -->
-    <TextView
-        android:id="@+id/task_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <!-- Task Description -->
-    <TextView
-        android:id="@+id/task_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp" />
-
-    <!-- Task Due Date -->
-    <TextView
-        android:id="@+id/task_due_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp" />
-
-    <!-- Priority Color Indicator -->
-    <View
-        android:id="@+id/task_priority_indicator"
-        android:layout_width="50dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_gravity="start"/>
-
-    <!-- Task Completion Slider -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="16dp">
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white">
 
+        <!-- Task Title -->
         <TextView
-            android:id="@+id/completion_percentage"
-            android:layout_width="wrap_content"
+            android:id="@+id/task_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0%"
-            android:textSize="14sp"
-            android:layout_marginEnd="8dp"
-            android:textColor="#757575"/>
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:paddingBottom="8dp" />
 
-        <SeekBar
-            android:id="@+id/task_completion_slider"
-            android:layout_width="0dp"
+        <!-- Task Description -->
+        <TextView
+            android:id="@+id/task_description"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:max="100"
-            android:progress="0"
-            android:thumb="@drawable/baseline_thumb_up_24"
-            android:progressDrawable="@drawable/seekbar_progress"
-            android:background="@drawable/seekbar_background"/>
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            android:paddingBottom="8dp"/>
+
+        <!-- Task Due Date -->
+        <TextView
+            android:id="@+id/task_due_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"
+            android:paddingBottom="8dp"/>
+
+        <!-- Priority Color Indicator -->
+        <View
+            android:id="@+id/task_priority_indicator"
+            android:layout_width="50dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="start"/>
+
+        <!-- Task Completion Slider -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/completion_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0%"
+                android:textSize="14sp"
+                android:textColor="#757575"
+                android:layout_marginEnd="8dp"/>
+
+            <SeekBar
+                android:id="@+id/task_completion_slider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="100"
+                android:progress="0"
+                android:thumb="@drawable/baseline_thumb_up_24"
+                android:progressDrawable="@drawable/seekbar_progress"
+                android:background="@drawable/seekbar_background"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>

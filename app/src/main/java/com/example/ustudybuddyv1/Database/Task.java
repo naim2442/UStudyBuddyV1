@@ -15,6 +15,8 @@ public class Task {
     private String title;
     private String description;
     private long dueDate;
+
+    private int completionPercentage;
     private String priority;
     private boolean isCompleted;
     private boolean isRecurring;
@@ -41,6 +43,15 @@ public class Task {
         this.userId = userId;
     }
 
+
+    // Add getters and setters
+    public int getCompletionPercentage() {
+        return completionPercentage;
+    }
+
+    public void setCompletionPercentage(int completion) {
+        this.completionPercentage = completion;
+    }
     @NonNull
     public String getId() {
         return id;

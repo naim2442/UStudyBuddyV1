@@ -11,6 +11,7 @@ import java.util.List;
 
 @Dao
 public interface TaskDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Task task);
 
@@ -20,13 +21,14 @@ public interface TaskDao {
     @Delete
     void delete(Task task);
 
+    @Update
+    void updateTask(Task task);  // Method to update a task
+
     // Fetch tasks for a specific user
     @Query("SELECT * FROM tasks WHERE userId = :userId ORDER BY dueDate ASC")
     List<Task> getTasksByUser(String userId);
 
-    @Query("SELECT COUNT(*) FROM tasks")
-    int getTotalTodos();
-
-
-
+    // Fetch total tasks for a specific user
+    @Query("SELECT COUNT(*) FROM tasks WHERE userId = :userId")
+    int getTotalTodos(String userId);
 }

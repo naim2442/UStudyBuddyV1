@@ -1,34 +1,41 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp"
-    android:gravity="center_horizontal"
-    android:background="@drawable/card_background"
-    android:clickable="true"
-    android:focusable="true"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
 
-    <!-- Study Tip Title -->
-<TextView
-android:id="@+id/tvTitle"
-android:layout_width="wrap_content"
+  >
+
+<LinearLayout
+android:layout_width="match_parent"
 android:layout_height="wrap_content"
-android:text="Study Tip Title"
-android:textSize="16sp"
-android:textStyle="bold"
-android:textColor="@color/black"
+android:orientation="vertical"
+android:padding="16dp"
+android:gravity="center_horizontal"
+android:background="@android:color/white">
+
+<!-- Study Tip Title -->
+<TextView
+    android:id="@+id/tvTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Study Tip Title"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    android:textColor="@color/black"
     android:gravity="center_horizontal" />
 
-    <!-- Author of the Tip -->
+<!-- Author of the Tip -->
 <TextView
-android:id="@+id/tvAuthor"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="By: John Doe"
-android:textSize="14sp"
-android:textColor="@color/black"
+    android:id="@+id/tvAuthor"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="By: John Doe"
+    android:textSize="14sp"
+    android:textColor="@color/black"
     android:gravity="center_horizontal"
     android:layout_marginTop="4dp" />
 
-    </LinearLayout>
+</LinearLayout>
+    </androidx.cardview.widget.CardView>

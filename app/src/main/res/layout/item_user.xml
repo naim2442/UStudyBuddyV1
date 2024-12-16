@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <!-- User Name TextView -->
     <TextView
         android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
@@ -12,10 +13,23 @@
         android:text="User Name"
         android:textSize="16sp" />
 
+    <!-- User Role TextView -->
     <TextView
         android:id="@+id/tvUserRole"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Role"
         android:textSize="14sp" />
+
+    <!-- Delete Button -->
+    <Button
+        android:id="@+id/btnDeleteUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete User"
+        android:textColor="@android:color/white"
+
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:gravity="center" />
 </LinearLayout>

@@ -9,21 +9,21 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Task.class}, version = 2, exportSchema = false)
+@Database(entities = {Task.class}, version = 3, exportSchema = false)
 public abstract class TaskDatabase extends RoomDatabase {
 
     public abstract TaskDao taskDao();
 
     private static volatile TaskDatabase INSTANCE;
 
-    // Singleton pattern for database instance
     public static TaskDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (TaskDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     TaskDatabase.class, "task_database")
-                            .fallbackToDestructiveMigration()
+                            .addMigrations(MIGRATION_1_2, MIGRATION_2_3) // Include migration steps
+                            .fallbackToDestructiveMigration()  // This will delete the old DB if migration fails
                             .build();
                 }
             }
@@ -31,12 +31,21 @@ public abstract class TaskDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    Migration MIGRATION_1_2 = new Migration(1, 2) {
+    // Migration from version 1 to version 2
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            // Add the new column (completionPercentage)
-            database.execSQL("ALTER TABLE Task ADD COLUMN completionPercentage INTEGER NOT NULL DEFAULT 0");
+            // Create the table for version 2 (in case it doesn't exist)
+            database.execSQL("CREATE TABLE IF NOT EXISTS `Task` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `completionPercentage` INTEGER NOT NULL DEFAULT 0)");
         }
     };
 
+    // Migration from version 2 to version 3
+    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // Add a new column `newColumn` for version 3
+            database.execSQL("ALTER TABLE Task ADD COLUMN newColumn INTEGER NOT NULL DEFAULT 0");
+        }
+    };
 }

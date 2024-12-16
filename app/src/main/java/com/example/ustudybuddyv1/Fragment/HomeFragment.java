@@ -22,6 +22,8 @@ import com.example.ustudybuddyv1.Adapter.RecommendedGroupsAdapter;
 import com.example.ustudybuddyv1.Adapter.RecommendedVideosAdapter;
 import com.example.ustudybuddyv1.Adapter.StudyGroupAdapter;
 import com.example.ustudybuddyv1.Adapter.StudyTipAdapter;
+import com.example.ustudybuddyv1.Adapter.TaskAdapter;
+import com.example.ustudybuddyv1.Database.Task;
 import com.example.ustudybuddyv1.Database.TaskDao;
 import com.example.ustudybuddyv1.Database.TaskDatabase;
 import com.example.ustudybuddyv1.Model.Announcement;
@@ -48,7 +50,7 @@ import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
-    private RecyclerView recyclerViewLatestGroups, recyclerViewRecommendedVideos, recyclerViewMotivationalQuotes;
+    private RecyclerView recyclerViewLatestGroups, recyclerViewRecommendedVideos, recyclerViewMotivationalQuotes, recyclerViewTaskItems;
     private RecyclerView recyclerViewAnnouncements;
     private AnnouncementsAdapter announcementsAdapter;
     private List<Announcement> announcements = new ArrayList<>();
@@ -68,7 +70,10 @@ public class HomeFragment extends Fragment {
     private List<StudyGroup> allStudyGroups = new ArrayList<>();
     private List<StudyGroup> recommendedGroups = new ArrayList<>();
     private String userCourse, userUniversity, currentUserId;
-
+    private RecyclerView recyclerViewToDoList;
+    private TaskAdapter taskAdapter;
+    private List<Task> taskList = new ArrayList<>();
+    private TaskDao taskDao;
 
     private RecyclerView recyclerViewDailyTips;
     private List<StudyTip> studyTips = new ArrayList<>(); // List to store study tips
@@ -85,6 +90,17 @@ public class HomeFragment extends Fragment {
         recyclerViewRecommendedVideos = view.findViewById(R.id.recycler_view_recommended);
         recyclerViewMotivationalQuotes = view.findViewById(R.id.recycler_view_motivational_quotes);
         TextView announcementsTitle = view.findViewById(R.id.announcements_title);
+
+
+        // Initialize RecyclerView
+        recyclerViewToDoList = view.findViewById(R.id.recycler_view_task_items);
+        recyclerViewToDoList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // Fetch tasks from the database
+        taskDao = TaskDatabase.getInstance(getActivity()).taskDao(); // Assuming you have a TaskDatabase class
+        fetchTasks();
+
+
+
         announcementsTitle.setOnClickListener(v -> {
             AnnouncementsFragment announcementsFragment = new AnnouncementsFragment();
 
@@ -156,6 +172,7 @@ public class HomeFragment extends Fragment {
         recyclerViewAnnouncements.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewLatestGroups.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewRecommendedVideos.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewToDoList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         // Initialize the recommended groups title
         TextView recommendedGroupsTitle = view.findViewById(R.id.recommended_videos_title);
@@ -203,6 +220,19 @@ public class HomeFragment extends Fragment {
 
 
         return view;
+    }
+
+
+    private void fetchTasks() {
+        // Fetch tasks asynchronously
+        new Thread(() -> {
+            taskList = taskDao.getTasksByUser(currentUserId); // Fetch all tasks from the database
+            getActivity().runOnUiThread(() -> {
+                // Once data is fetched, set the adapter
+                taskAdapter = new TaskAdapter(taskList, taskDao);
+                recyclerViewToDoList.setAdapter(taskAdapter);
+            });
+        }).start();
     }
     private void loadUserStatistics() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -297,7 +327,8 @@ public class HomeFragment extends Fragment {
         TaskDao taskDao = TaskDatabase.getInstance(getContext()).taskDao();
 
         // Perform database query synchronously on a background thread (no UI updates here)
-        return taskDao.getTotalTodos() - 1 ;  // You could also pass userId if you want user-specific tasks
+        return taskDao.getTotalTodos(userId);
+        // You could also pass userId if you want user-specific tasks
     }
 
 

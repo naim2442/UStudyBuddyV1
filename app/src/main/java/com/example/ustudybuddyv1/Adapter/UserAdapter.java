@@ -3,6 +3,7 @@ package com.example.ustudybuddyv1.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,9 +17,17 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private final List<User> userList;
+    private final OnDeleteClickListener onDeleteClickListener;  // Interface for delete action
 
-    public UserAdapter(List<User> userList) {
+    // Interface for delete action
+    public interface OnDeleteClickListener {
+        void onDeleteClick(User user);
+    }
+
+    // Constructor with callback for delete action
+    public UserAdapter(List<User> userList, OnDeleteClickListener onDeleteClickListener) {
         this.userList = userList;
+        this.onDeleteClickListener = onDeleteClickListener;
     }
 
     @NonNull
@@ -33,6 +42,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         User user = userList.get(position);
         holder.tvUserName.setText(user.getName());
         holder.tvUserRole.setText(user.getRole());
+
+        // Set up delete button click listener
+        holder.btnDeleteUser.setOnClickListener(v -> {
+            if (onDeleteClickListener != null) {
+                onDeleteClickListener.onDeleteClick(user);
+            }
+        });
     }
 
     @Override
@@ -42,11 +58,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
         TextView tvUserName, tvUserRole;
+        Button btnDeleteUser;  // Delete Button
 
         UserViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             tvUserRole = itemView.findViewById(R.id.tvUserRole);
+            btnDeleteUser = itemView.findViewById(R.id.btnDeleteUser);  // Initialize the button
         }
     }
 }
