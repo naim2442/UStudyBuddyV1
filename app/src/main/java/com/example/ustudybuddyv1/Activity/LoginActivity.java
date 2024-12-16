@@ -2,11 +2,13 @@ package com.example.ustudybuddyv1.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ustudybuddyv1.R;
@@ -36,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.password);
         Button buttonLogin = findViewById(R.id.login_button);
         Button registerButton = findViewById(R.id.register_button);
+        // Forgot Password Button
+        Button forgotPasswordButton = findViewById(R.id.forgot_password);
 
         // Set up login button click listener
         buttonLogin.setOnClickListener(view -> loginUser());
@@ -44,7 +48,27 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(view -> {
             startActivity(new Intent(LoginActivity.this, SignupActivity.class));
         });
+
+
+
+        // Set click listener for the Forgot Password Button
+        forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showForgotPasswordDialog();
+            }
+        });
     }
+
+    // Method to show the Forgot Password Alert Dialog
+    private void showForgotPasswordDialog() {
+        new AlertDialog.Builder(LoginActivity.this)
+                .setTitle("Forgot Password")
+                .setMessage("For assistance, please contact us at: neotechsupport@gmail.com")
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
 
     private void loginUser() {
         String email = editTextEmail.getText().toString().trim();
