@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".Activity.LoginActivity">
+    tools:context=".Activity.LocationDetailsActivity$LoginActivity">
 
     <!-- FrameLayout for image background and overlay -->
     <FrameLayout
@@ -29,7 +29,7 @@
         android:layout_width="170dp"
         android:layout_height="156dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/app_logo_alt"
+        android:src="@drawable/new_logo_alt"
         app:layout_constraintBottom_toTopOf="@id/welcome_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -16,7 +16,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Delay for a short time, then start the LoginActivity
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            Intent intent = new Intent(SplashActivity.this, LocationDetailsActivity.LoginActivity.class);
             startActivity(intent);
             finish(); // Close the SplashActivity
         }, 2000); // 2000 milliseconds = 2 seconds

@@ -77,7 +77,7 @@ public class SignupDetailsActivity extends AppCompatActivity {
             userRef.setValue(new User(userId, name, email, password, studentId, university, course, locationPreference))
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(SignupDetailsActivity.this, "Registration Completed!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignupDetailsActivity.this, LoginActivity.class));
+                        startActivity(new Intent(SignupDetailsActivity.this, LocationDetailsActivity.LoginActivity.class));
                         finish();
                     })
                     .addOnFailureListener(e -> {
@@ -85,7 +85,7 @@ public class SignupDetailsActivity extends AppCompatActivity {
                     });
         } else {
             Toast.makeText(SignupDetailsActivity.this, "User not authenticated. Please sign in again.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(SignupDetailsActivity.this, LoginActivity.class));
+            startActivity(new Intent(SignupDetailsActivity.this, LocationDetailsActivity.LoginActivity.class));
         }
     }
 }

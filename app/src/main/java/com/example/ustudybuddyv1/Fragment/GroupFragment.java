@@ -99,7 +99,12 @@ public class GroupFragment extends Fragment {
 
                 yourGroupsAdapter.notifyDataSetChanged();
                 upcomingGroupsAdapter.notifyDataSetChanged();
+
+                // Toggle visibility based on yourGroups content
+                toggleCreateGroupVisibility();
             }
+
+
 
 
             @Override

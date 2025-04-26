@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.ustudybuddyv1.Activity.ChangePasswordActivity;
-import com.example.ustudybuddyv1.Activity.LoginActivity;
+import com.example.ustudybuddyv1.Activity.LocationDetailsActivity;
 import com.example.ustudybuddyv1.Activity.StudentDetailsEditActivity;
 import com.example.ustudybuddyv1.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -157,7 +157,7 @@ public class ProfileFragment extends Fragment {
         mAuth.signOut();
         Toast.makeText(getActivity(), "Logged out successfully", Toast.LENGTH_SHORT).show();
         // Redirect to login page
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        Intent intent = new Intent(getActivity(), LocationDetailsActivity.LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         getActivity().finish(); // Close current activity
